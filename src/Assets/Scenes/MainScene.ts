@@ -15,9 +15,11 @@ export function load(): Scene{
     scene.add(obj);
     
     var player: Player = new Player("Player Test");
-    player.position.x = 3;
+    
 
     player.camera = Game.getHandler().camera;
+    player.camera.position.x = -3;
+    player.camera.lookAt(cube.position);
     scene.add(player);
 
     return scene;

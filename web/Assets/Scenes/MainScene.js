@@ -11,8 +11,9 @@ export function load() {
     obj.add(cube);
     scene.add(obj);
     var player = new Player("Player Test");
-    player.position.x = 3;
     player.camera = Game.getHandler().camera;
+    player.camera.position.x = -3;
+    player.camera.lookAt(cube.position);
     scene.add(player);
     return scene;
 }
