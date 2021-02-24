@@ -1,22 +1,29 @@
 import { GameObject } from "../../System/Core/GameObject.js";
 import * as Maths from "../../System/Maths.js";
 import * as Input from "../../System/Input/Input.js";
+import { Vector2 } from "../../../libs/three/src/Three.js";
+import * as UI from "../Objects/UI.js";
 export class Player extends GameObject {
     constructor(name) {
         super(name);
         this.camera = undefined;
     }
     update() {
-        let xMove = Input.asAxis(83, 90);
-        let zMove = Input.asAxis(81, 68);
-        //let angle: number = this.camera?.rotation.x !== undefined ? this.camera.rotation.x:0;
-        //let moveDir: Vector2 = new Vector2(xMove * Math.sin(angle) * 0.25, zMove * -Math.cos(angle) * 0.25);
+        var _a;
+        let v = Input.asAxis(90, 83);
+        let h = Input.asAxis(81, 68);
+        let moveDir = new Vector2(0, 0);
+        if (Math.sqrt(v * v + h * h) !== 0) {
+            let angle = Maths.radToDeg(Math.atan2(h, v));
+            let targetAngle = Maths.radToDeg(((_a = this.camera) === null || _a === void 0 ? void 0 : _a.rotation.y) !== undefined ? this.camera.rotation.y : 0) + angle;
+            UI.showOnDebug("Camera angle: " + (targetAngle - angle) + ", Directionnal angle: " + targetAngle);
+            moveDir = new Vector2(Math.cos(Maths.degToRad(targetAngle)), Math.sin(Maths.degToRad(targetAngle)));
+        }
         if (this.camera !== undefined) {
-            this.camera.position.x += xMove * 0.25;
-            this.camera.position.z += zMove * 0.25;
-            //console.log(this.camera.position.x+";"+this.camera.position.y+";"+this.camera.position.z);
-            this.camera.rotation.x = Maths.clamp(this.camera.rotation.x + Input.getMouseDelta().y * 0.005, -100, 100);
-            this.camera.rotation.y = Maths.clamp(this.camera.rotation.y + Input.getMouseDelta().x * 0.005, -75, 75);
+            this.camera.position.x += moveDir.y * 0.05;
+            this.camera.position.z += moveDir.x * 0.05;
+            this.camera.rotation.x = Maths.clamp(this.camera.rotation.x + Input.getMouseDelta().y * 0.005, Maths.degToRad(-75), Maths.degToRad(75));
+            this.camera.rotation.y = Maths.loopInRange(this.camera.rotation.y + Input.getMouseDelta().x * 0.005, Maths.degToRad(-180), Maths.degToRad(180));
         }
     }
 }

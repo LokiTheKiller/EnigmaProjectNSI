@@ -1,5 +1,6 @@
 import * as Game from "../../Game.js";
 document.addEventListener('pointerlockchange', lockChange, false);
+document.addEventListener('mozpointerlockchange', lockChange, false);
 var locked = false;
 var canvas = null;
 export function init() {

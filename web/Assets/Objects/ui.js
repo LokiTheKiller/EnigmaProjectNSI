@@ -1,8 +1,14 @@
 var text = document.getElementById("ui");
+var debugText = document.getElementById("debug");
 var enigme = 0;
-
-export function increment()
-{
+export function increment() {
     enigme++;
-    text.innerHTML = `Enigme : ${enigme} / 8`;
+    if (text !== null) {
+        text.innerHTML = `Enigme : ${enigme} / 8`;
+    }
+}
+export function showOnDebug(text) {
+    if (debugText !== null) {
+        debugText.innerHTML = text;
+    }
 }

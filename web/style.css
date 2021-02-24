@@ -18,8 +18,18 @@
 }
 
 #enigme{
+    font-family: Arial;
     position: absolute;   
     background-color: rgb(0, 0, 0, 0);
     color : white;
     font-size: 2em;
+}
+
+#debug{
+    text-align: left;
+    font-family: Arial;
+    position: absolute;   
+    background-color: rgb(0, 0, 0, 0);
+    color : white;
+    font-size: 1em;
 }
