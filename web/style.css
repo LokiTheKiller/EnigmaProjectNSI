@@ -13,17 +13,23 @@
 }
 
 #container{
-    width: 86%;
+    position: absolute;
+    width: 100%;
     text-align: right;
 }
 
 #enigme{
+<<<<<<< HEAD
     font-family: Arial;
     position: absolute;   
+=======
+    position: relative;   
+>>>>>>> 8e78f524da49767cf7a5249ead0b55a1f49aa457
     background-color: rgb(0, 0, 0, 0);
     color : white;
     font-size: 2em;
 }
+<<<<<<< HEAD
 
 #debug{
     text-align: left;
@@ -33,3 +39,5 @@
     color : white;
     font-size: 1em;
 }
+=======
+>>>>>>> 8e78f524da49767cf7a5249ead0b55a1f49aa457
