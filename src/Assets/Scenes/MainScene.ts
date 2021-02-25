@@ -4,6 +4,7 @@ import * as Maths from "../../System/Maths.js";
 import { GameObject } from "../../System/Core/GameObject.js";
 import { BoxGeometry, Mesh, MeshBasicMaterial, Scene } from '../../../libs/three/src/Three.js';
 
+let meshArray: Array<Mesh> = [];
 export function load(): Scene{
     var scene: Scene = new Scene();
     
@@ -12,7 +13,7 @@ export function load(): Scene{
     var cube: Mesh = new Mesh(geometry, material);
     var obj: GameObject = new GameObject("Basic Cube");
     obj.add(cube);
-    
+    meshArray.push(cube);
     scene.add(obj);
     
     var player: Player = new Player("Player Test");
@@ -26,3 +27,5 @@ export function load(): Scene{
 
     return scene;
 }
+
+export { meshArray };

@@ -3,6 +3,7 @@ import * as Game from "../../Game.js";
 import * as Maths from "../../System/Maths.js";
 import { GameObject } from "../../System/Core/GameObject.js";
 import { BoxGeometry, Mesh, MeshBasicMaterial, Scene } from '../../../libs/three/src/Three.js';
+let meshArray = [];
 export function load() {
     var scene = new Scene();
     const geometry = new BoxGeometry();
@@ -10,6 +11,7 @@ export function load() {
     var cube = new Mesh(geometry, material);
     var obj = new GameObject("Basic Cube");
     obj.add(cube);
+    meshArray.push(cube);
     scene.add(obj);
     var player = new Player("Player Test");
     player.camera = Game.getHandler().camera;
@@ -19,3 +21,4 @@ export function load() {
     scene.add(player);
     return scene;
 }
+export { meshArray };
