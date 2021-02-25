@@ -3,7 +3,7 @@ import * as Maths from "../../System/Maths.js";
 import * as Input from "../../System/Input/Input.js";
 import { Vector2, Vector3, Raycaster } from "../../../libs/three/src/Three.js";
 import * as UI from "../Objects/UI.js";
-import { meshArray } from "../Scenes/MainScene.js";
+import { collisionArray, interactionArray } from "../Scenes/MainScene.js";
 export class Player extends GameObject {
     constructor(name) {
         super(name);
@@ -15,7 +15,7 @@ export class Player extends GameObject {
             return true;
         }
         const distance = 0.52;
-        const obstacles = meshArray;
+        const obstacles = collisionArray;
         let collisions;
         this.raycaster.set(this.camera.position, new Vector3(z, 0, x));
         collisions = this.raycaster.intersectObjects(obstacles);
@@ -23,6 +23,21 @@ export class Player extends GameObject {
             return true;
         }
         return false;
+    }
+    interraction() {
+        if (this.camera === undefined) {
+            return;
+        }
+        const iter = interactionArray;
+        const distance = 1;
+        let interractions;
+        let cameraDir = new Vector3();
+        this.camera.getWorldDirection(cameraDir);
+        this.raycaster.set(this.camera.position, cameraDir);
+        interractions = this.raycaster.intersectObjects(iter);
+        if (interractions.length > 0 && interractions[0].distance <= distance) {
+            UI.showOnDebug("Interraction possible");
+        }
     }
     update() {
         var _a;
@@ -40,6 +55,7 @@ export class Player extends GameObject {
             moveDir = new Vector2(Math.cos(Maths.degToRad(targetAngle)), Math.sin(Maths.degToRad(targetAngle)));
         }
         if (this.camera !== undefined) {
+            this.interraction();
             if (!this.collision(x, z)) {
                 this.camera.position.x += moveDir.y * 0.05;
                 this.camera.position.z += moveDir.x * 0.05;
