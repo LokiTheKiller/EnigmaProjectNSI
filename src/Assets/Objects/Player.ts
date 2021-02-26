@@ -1,7 +1,7 @@
 import { GameObject } from "../../System/Core/GameObject.js";
 import * as Maths from "../../System/Maths.js";
 import * as Input from "../../System/Input/Input.js";
-import { Euler, PerspectiveCamera, Quaternion, Vector2, Vector3, Raycaster, Mesh, Intersection } from "../../../libs/three/src/Three.js";
+import { Euler, PerspectiveCamera, Quaternion, Vector2, Vector3, Raycaster, Mesh, Intersection, Object3D } from "../../../libs/three/src/Three.js";
 import * as UI from "../Objects/UI.js"
 import { collisionArray, interactionArray } from "../Scenes/MainScene.js"
 
@@ -20,16 +20,25 @@ export class Player extends GameObject{
         {
             return true;
         }
-        const distance:number = 0.52;
-        const obstacles:Array<Mesh> = collisionArray;
+        const distance:number = 0.32;
+        const obstacles:Array<Object3D> = collisionArray;
         let collisions:Array<Intersection>;
-        this.raycaster.set(this.camera.position, new Vector3(z, 0, x));
-        collisions = this.raycaster.intersectObjects(obstacles);
-        if (collisions.length > 0 && collisions[0].distance <= distance)
+        let posTete:Vector3 = this.camera.position; //PosTete et pied, pour simuler un personnage et pas simplement une caméra volante.
+        let posPied:Vector3 = new Vector3(this.camera.position.x, this.camera.position.y - 1.79, this.camera.position.z);
+        this.raycaster.set(posTete, new Vector3(z, 0, x));
+        collisions = this.raycaster.intersectObjects(obstacles, true);
+        if (collisions.length > 0 && collisions[0].distance <= distance) //On verifie si il y a collision au niveau de la tête,
         {
             return true;
         }
-        return false;
+        this.raycaster.set(posPied, new Vector3(z, 0, x));
+        collisions = this.raycaster.intersectObjects(obstacles, true);
+        if (collisions.length > 0 && collisions[0].distance <= distance) //puis des pieds
+        {
+            return true;
+        }
+        return false
+
     }
 
     interraction(): void{
@@ -37,13 +46,13 @@ export class Player extends GameObject{
         {
             return;
         }
-        const iter: Array<Mesh> = interactionArray;
+        const iter: Array<Object3D> = interactionArray;
         const distance:number = 1;
         let interractions:Array<Intersection>;
         let cameraDir:Vector3 = new Vector3();
         this.camera.getWorldDirection(cameraDir);
         this.raycaster.set(this.camera.position, cameraDir);
-        interractions = this.raycaster.intersectObjects(iter);
+        interractions = this.raycaster.intersectObjects(iter, true);
         if (interractions.length > 0 && interractions[0].distance <= distance)
         {
             UI.showOnDebug("Interraction possible");

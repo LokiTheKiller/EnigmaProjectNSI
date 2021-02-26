@@ -14,12 +14,21 @@ export class Player extends GameObject {
         if (this.camera === undefined) {
             return true;
         }
-        const distance = 0.52;
+        const distance = 0.32;
         const obstacles = collisionArray;
         let collisions;
-        this.raycaster.set(this.camera.position, new Vector3(z, 0, x));
-        collisions = this.raycaster.intersectObjects(obstacles);
-        if (collisions.length > 0 && collisions[0].distance <= distance) {
+        let posTete = this.camera.position; //PosTete et pied, pour simuler un personnage et pas simplement une caméra volante.
+        let posPied = new Vector3(this.camera.position.x, this.camera.position.y - 1.79, this.camera.position.z);
+        this.raycaster.set(posTete, new Vector3(z, 0, x));
+        collisions = this.raycaster.intersectObjects(obstacles, true);
+        if (collisions.length > 0 && collisions[0].distance <= distance) //On verifie si il y a collision au niveau de la tête,
+         {
+            return true;
+        }
+        this.raycaster.set(posPied, new Vector3(z, 0, x));
+        collisions = this.raycaster.intersectObjects(obstacles, true);
+        if (collisions.length > 0 && collisions[0].distance <= distance) //puis des pieds
+         {
             return true;
         }
         return false;
@@ -34,7 +43,7 @@ export class Player extends GameObject {
         let cameraDir = new Vector3();
         this.camera.getWorldDirection(cameraDir);
         this.raycaster.set(this.camera.position, cameraDir);
-        interractions = this.raycaster.intersectObjects(iter);
+        interractions = this.raycaster.intersectObjects(iter, true);
         if (interractions.length > 0 && interractions[0].distance <= distance) {
             UI.showOnDebug("Interraction possible");
         }
