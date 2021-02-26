@@ -4,8 +4,8 @@ import * as Maths from "../../System/Maths.js";
 import { GameObject } from "../../System/Core/GameObject.js";
 import { BoxGeometry, Mesh, MeshBasicMaterial, Object3D, ObjectLoader, Scene, Vector3 } from '../../../libs/three/src/Three.js';
 
-let collisionArray: Array<Object3D> = [];
-let interactionArray: Array<Object3D> = [];
+let collisionArray: Array<GameObject> = [];
+let interactionArray: Array<GameObject> = [];
 
 function addObject(mesh: Object3D, name: string, collideable: Boolean, interactable: Boolean, scene: Scene): GameObject
 {

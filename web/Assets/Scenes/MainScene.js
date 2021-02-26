@@ -18,12 +18,11 @@ function addObject(mesh, name, collideable, interactable, scene) {
 }
 export function load() {
     var scene = new Scene();
-    /**                             Pour ajouter la carte.
     var map = new GameObject("");
     const loader = new ObjectLoader();
     loader.load("scene.json", function (carte) {
         map = addObject(carte, "Map", true, false, scene);
-    }); **/
+    });
     const geometry = new BoxGeometry();
     const material = new MeshBasicMaterial({ color: 0xBF0000 });
     const material2 = new MeshBasicMaterial({ color: 0xffffff });

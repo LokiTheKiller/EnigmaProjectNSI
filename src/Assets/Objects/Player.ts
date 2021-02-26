@@ -1,7 +1,7 @@
 import { GameObject } from "../../System/Core/GameObject.js";
 import * as Maths from "../../System/Maths.js";
 import * as Input from "../../System/Input/Input.js";
-import { Euler, PerspectiveCamera, Quaternion, Vector2, Vector3, Raycaster, Mesh, Intersection, Object3D } from "../../../libs/three/src/Three.js";
+import { Euler, PerspectiveCamera, Quaternion, Vector2, Vector3, Raycaster, Intersection, Object3D } from "../../../libs/three/src/Three.js";
 import * as UI from "../Objects/UI.js"
 import { collisionArray, interactionArray } from "../Scenes/MainScene.js"
 
@@ -21,7 +21,7 @@ export class Player extends GameObject{
             return true;
         }
         const distance:number = 0.32;
-        const obstacles:Array<Object3D> = collisionArray;
+        const obstacles:Array<GameObject> = collisionArray;
         let collisions:Array<Intersection>;
         let posTete:Vector3 = this.camera.position; //PosTete et pied, pour simuler un personnage et pas simplement une caméra volante.
         let posPied:Vector3 = new Vector3(this.camera.position.x, this.camera.position.y - 1.79, this.camera.position.z);
@@ -46,7 +46,7 @@ export class Player extends GameObject{
         {
             return;
         }
-        const iter: Array<Object3D> = interactionArray;
+        const iter: Array<GameObject> = interactionArray;
         const distance:number = 1;
         let interractions:Array<Intersection>;
         let cameraDir:Vector3 = new Vector3();
