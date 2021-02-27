@@ -10,3 +10,18 @@ export class GameObject extends Object3D{
     update(): void{}
 
 }
+
+export class Interactable extends GameObject{
+    
+    constructor(name: string, interactCallback: (obj: Interactable) => void){
+        super(name);
+        this.interactCallback = interactCallback;
+    }
+
+    update(): void{}
+    interact(): void{
+        this.interactCallback(this);
+    }
+
+    protected interactCallback(obj: Interactable): void{}
+}

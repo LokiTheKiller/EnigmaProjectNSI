@@ -1,4 +1,4 @@
-var text: HTMLElement | null = document.getElementById("ui");
+var text: HTMLElement | null = document.getElementById("enigme");
 var debugText: HTMLElement | null = document.getElementById("debug");
 var enigme = 0;
 

@@ -57,6 +57,9 @@ function onKeyUp(event: KeyboardEvent): void{
 
 function onKeyDown(event: KeyboardEvent): void {
     var keyCode = event.which;
+    if(keys[keyCode].keyPressed){
+        return;
+    }
     keys[keyCode].keyPressed = true;
     keys[keyCode].keyState = 1;
     keys[keyCode].trigger();

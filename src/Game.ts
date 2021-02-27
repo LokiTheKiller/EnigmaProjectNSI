@@ -1,7 +1,8 @@
-import { WebGLRenderer } from '../libs/three/src/Three.js';
+import { Object3D, WebGLRenderer } from '../libs/three/src/Three.js';
 import * as MainScene from "./Assets/Scenes/MainScene.js";
 import * as Input from "./System/Input/Input.js";
 import * as Cursor from "./System/Input/Cursor.js";
+import { GameObject } from "./System/Core/GameObject.js";
 //import * as Time from './System/Core/Time.js';
 import { Handler } from './System/Core/Handler.js';
 
@@ -57,6 +58,22 @@ export function getHandler(): Handler{
 
 export function getCanvas(): HTMLCanvasElement | null{
     return canvas;
+}
+
+export function getParentGameObject(obj: Object3D): GameObject | null{
+    if(obj instanceof GameObject){
+        return obj;
+    }
+
+    if(obj.parent !== null){
+        let parent: Object3D = obj.parent;
+        let go: GameObject | null = getParentGameObject(parent);
+        if(go !== null){
+            return go;
+        }
+
+    }
+    return null;
 }
 
 /**const speed = 5 * Time.deltaTime;

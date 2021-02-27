@@ -1,18 +1,26 @@
 import { Player } from "../Objects/Player.js";
 import * as Game from "../../Game.js";
-import { GameObject } from "../../System/Core/GameObject.js";
+import * as UI from "../Objects/UI.js";
+import { GameObject, Interactable } from "../../System/Core/GameObject.js";
 import { BoxGeometry, Mesh, MeshBasicMaterial, Scene } from '../../../libs/three/src/Three.js';
 let collisionArray = [];
 let interactionArray = [];
-function addObject(mesh, name, collideable, interactable, scene) {
+function addObject(mesh, name, collideable, scene) {
     var obj = new GameObject(name);
-    obj.add(mesh);
     if (collideable) {
         collisionArray.push(obj);
     }
-    if (interactable) {
-        interactionArray.push(obj);
+    obj.add(mesh);
+    scene.add(obj);
+    return obj;
+}
+function addInteractable(mesh, name, collideable, scene, interaction) {
+    var obj = new Interactable(name, interaction);
+    if (collideable) {
+        collisionArray.push(obj);
     }
+    interactionArray.push(obj);
+    obj.add(mesh);
     scene.add(obj);
     return obj;
 }
@@ -29,8 +37,20 @@ export function load() {
     const material2 = new MeshBasicMaterial({ color: 0xffffff });
     var cube = new Mesh(geometry, material);
     var cube2 = new Mesh(geometry, material2);
-    var obj = addObject(cube, "Basic Cube", true, false, scene);
-    var obj2 = addObject(cube2, "Interactive cube", true, true, scene);
+    var obj = addObject(cube, "Basic Cube", true, scene);
+    var obj2 = addInteractable(cube2, "Interactive cube", true, scene, (obj) => {
+        UI.increment();
+        scene.remove(obj);
+        removeInteraction(obj);
+    });
+    //Création d'un levier qui change la couleur du cube d'interaction
+    /**var leverMaterial: MeshBasicMaterial = new MeshBasicMaterial( {color: 0xDEB887 } );
+    var leverBaseMaterial: MeshBasicMaterial = new MeshBasicMaterial( {color: 0xC5C3C2} );
+    var leverMesh: Mesh = new Mesh(geometry, leverMaterial);
+    var leverBaseMesh: Mesh = new Mesh(geometry, leverBaseMaterial);
+
+    leverBaseMesh.scale.x = 0.3;
+    leverBaseMesh.scale.y = 0.5;**/
     obj.position.y += 0.5; //On surélève les cubes de la moitié de leur hauteur, pour que leur bas soit à y = 0.
     obj.position.x = 2;
     obj2.position.z = 3; //Sinon, ils sont enfoncés dans le sol à l'ajout de la carte.
@@ -41,5 +61,11 @@ export function load() {
     // player.camera.lookAt(cube.position);
     scene.add(player);
     return scene;
+}
+export function removeInteraction(obj) {
+    interactionArray = interactionArray.filter(function (el) { return el !== obj; });
+}
+export function removeCollision(obj) {
+    collisionArray = collisionArray.filter(function (el) { return el !== obj; });
 }
 export { collisionArray, interactionArray };

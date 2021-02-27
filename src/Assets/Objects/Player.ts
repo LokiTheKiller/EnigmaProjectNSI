@@ -1,14 +1,14 @@
-import { GameObject } from "../../System/Core/GameObject.js";
+import { GameObject, Interactable } from "../../System/Core/GameObject.js";
 import * as Maths from "../../System/Maths.js";
-// import { OrbitControls } from "../../../libs/three/examples/jsm/controls/OrbitControls";
+import * as Game from "../../Game.js";
 import * as Input from "../../System/Input/Input.js";
-import { PerspectiveCamera, Vector2, Vector3, Raycaster, Intersection, Mesh, Quaternion, Euler } from "../../../libs/three/src/Three.js";
+import { PerspectiveCamera, Vector2, Vector3, Raycaster, Intersection, Euler, Scene } from "../../../libs/three/src/Three.js";
 import * as UI from "../Objects/UI.js"
 import { collisionArray, interactionArray } from "../Scenes/MainScene.js"
 
 export class Player extends GameObject{
 
-    iTarget: GameObject | undefined = undefined;
+    iTarget: Interactable | undefined = undefined;
     camera: PerspectiveCamera | undefined = undefined;
     raycaster: Raycaster = new Raycaster();
     rotate: Euler = new Euler(0, 0, 0);
@@ -59,12 +59,18 @@ export class Player extends GameObject{
         if (interactions.length > 0 && interactions[0].distance <= distance)
         {
             UI.showOnDebug("Press E to interact");
-        } 
-        else {
+            let parent: GameObject | null = Game.getParentGameObject(interactions[0].object);
+            if(parent !== null && parent instanceof Interactable){
+                this.iTarget = parent;
+            }
+
+        } else {
             this.iTarget = undefined;
-            //UI.showOnDebug("");
+            UI.showOnDebug("");
         }
+
     }
+
     update(): void{
         let v: number = Input.asAxis(90, 83);
         let h: number = Input.asAxis(81, 68);
@@ -75,7 +81,7 @@ export class Player extends GameObject{
         if(this.camera !== undefined){
             this.interaction();
             this.rotate.y -= Maths.degToRad(Input.getMouseDelta().x * 0.25);
-            this.rotate.x = Maths.clamp(this.rotate.x + Maths.degToRad(Input.getMouseDelta().y * 0.25), -Math.PI / 2, Math.PI/2);
+            this.rotate.x = Maths.clamp(this.rotate.x - Maths.degToRad(Input.getMouseDelta().y * 0.25), -Math.PI / 2, Math.PI/2);
 
             const euler: Euler = new Euler(0, 0, 0, 'YXZ');
             euler.x = this.rotate.x;
@@ -95,6 +101,10 @@ export class Player extends GameObject{
                 this.camera.position.z += moveDir.x * 0.05;
             }
 
+        }
+
+        if(this.iTarget !== undefined && Input.getKeyDown(69)){
+            this.iTarget.interact();
         }
 
     }

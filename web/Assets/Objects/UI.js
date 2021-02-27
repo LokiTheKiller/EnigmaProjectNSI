@@ -1,4 +1,4 @@
-var text = document.getElementById("ui");
+var text = document.getElementById("enigme");
 var debugText = document.getElementById("debug");
 var enigme = 0;
 export function increment() {
