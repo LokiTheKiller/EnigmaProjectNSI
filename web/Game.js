@@ -4,6 +4,7 @@ import * as Input from "./System/Input/Input.js";
 import * as Cursor from "./System/Input/Cursor.js";
 //import * as Time from './System/Core/Time.js';
 import { Handler } from './System/Core/Handler.js';
+window.addEventListener('resize', onWindowResize, false);
 const canvas = document.querySelector('#canvas');
 var renderer = new WebGLRenderer();
 if (canvas !== null) {
@@ -35,6 +36,11 @@ function animate() {
         renderer.render(scene, handler.camera);
     }
     Input.lateUpdate();
+}
+function onWindowResize() {
+    handler.camera.aspect = window.innerWidth / window.innerHeight;
+    handler.camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
 }
 export function getHandler() {
     return handler;

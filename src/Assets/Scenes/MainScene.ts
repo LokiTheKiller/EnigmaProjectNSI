@@ -1,6 +1,5 @@
 import { Player } from "../Objects/Player.js";
 import * as Game from "../../Game.js";
-import * as Maths from "../../System/Maths.js";
 import { GameObject } from "../../System/Core/GameObject.js";
 import { BoxGeometry, Mesh, MeshBasicMaterial, Object3D, ObjectLoader, Scene, Vector3 } from '../../../libs/three/src/Three.js';
 
@@ -44,9 +43,9 @@ export function load(): Scene{
     var player: Player = new Player("Player Test");
     player.camera = Game.getHandler().camera;
     player.camera.position.y = 1.8; //mise de la caméra à hauteur "humaine".
-    player.camera.lookAt(cube.position);
+    // player.camera.lookAt(cube.position);
     scene.add(player);
     return scene;
-    }
+}
 
 export { collisionArray, interactionArray };

@@ -37,7 +37,7 @@ export function load() {
     var player = new Player("Player Test");
     player.camera = Game.getHandler().camera;
     player.camera.position.y = 1.8; //mise de la caméra à hauteur "humaine".
-    player.camera.lookAt(cube.position);
+    // player.camera.lookAt(cube.position);
     scene.add(player);
     return scene;
 }
