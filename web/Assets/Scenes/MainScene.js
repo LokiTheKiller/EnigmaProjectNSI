@@ -1,7 +1,7 @@
 import { Player } from "../Objects/Player.js";
 import * as Game from "../../Game.js";
 import { GameObject } from "../../System/Core/GameObject.js";
-import { BoxGeometry, Mesh, MeshBasicMaterial, ObjectLoader, Scene } from '../../../libs/three/src/Three.js';
+import { BoxGeometry, Mesh, MeshBasicMaterial, Scene } from '../../../libs/three/src/Three.js';
 let collisionArray = [];
 let interactionArray = [];
 function addObject(mesh, name, collideable, interactable, scene) {
@@ -18,11 +18,12 @@ function addObject(mesh, name, collideable, interactable, scene) {
 }
 export function load() {
     var scene = new Scene();
-    var map = new GameObject("");
-    const loader = new ObjectLoader();
-    loader.load("scene.json", function (carte) {
+    /**
+    var map: GameObject = new GameObject("");
+    const loader: ObjectLoader = new ObjectLoader();
+    loader.load("scene.json", function(carte: Object3D) {
         map = addObject(carte, "Map", true, false, scene);
-    });
+     })**/
     const geometry = new BoxGeometry();
     const material = new MeshBasicMaterial({ color: 0xBF0000 });
     const material2 = new MeshBasicMaterial({ color: 0xffffff });

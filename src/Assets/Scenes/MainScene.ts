@@ -6,7 +6,7 @@ import { BoxGeometry, Mesh, MeshBasicMaterial, Object3D, ObjectLoader, Scene, Ve
 let collisionArray: Array<GameObject> = [];
 let interactionArray: Array<GameObject> = [];
 
-function addObject(mesh: Object3D, name: string, collideable: Boolean, interactable: Boolean, scene: Scene): GameObject
+function addObject(mesh: Mesh, name: string, collideable: Boolean, interactable: Boolean, scene: Scene): GameObject
 {
     var obj: GameObject = new GameObject(name);
     obj.add(mesh);
@@ -24,11 +24,12 @@ function addObject(mesh: Object3D, name: string, collideable: Boolean, interacta
 
 export function load(): Scene{
     var scene: Scene = new Scene();
+    /** 
     var map: GameObject = new GameObject("");
     const loader: ObjectLoader = new ObjectLoader();
     loader.load("scene.json", function(carte: Object3D) {
         map = addObject(carte, "Map", true, false, scene);
-     })
+     })**/
     const geometry: BoxGeometry = new BoxGeometry();
     const material: MeshBasicMaterial = new MeshBasicMaterial( { color: 0xBF0000 } );
     const material2: MeshBasicMaterial = new MeshBasicMaterial( { color: 0xffffff } );

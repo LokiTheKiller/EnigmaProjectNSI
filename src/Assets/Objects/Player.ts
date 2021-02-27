@@ -55,21 +55,16 @@ export class Player extends GameObject{
         let cameraDir:Vector3 = new Vector3();
         this.camera.getWorldDirection(cameraDir);
         this.raycaster.set(this.camera.position, cameraDir);
-        interactions = this.raycaster.intersectObjects(iter);
+        interactions = this.raycaster.intersectObjects(iter, true);
         if (interactions.length > 0 && interactions[0].distance <= distance)
         {
-            if(interactions[0].object instanceof GameObject){
-                this.iTarget = interactions[0].object;
-                UI.showOnDebug("Press E to interact");
-            }
-
-        } else {
+            UI.showOnDebug("Press E to interact");
+        } 
+        else {
             this.iTarget = undefined;
             //UI.showOnDebug("");
         }
-
     }
-
     update(): void{
         let v: number = Input.asAxis(90, 83);
         let h: number = Input.asAxis(81, 68);
