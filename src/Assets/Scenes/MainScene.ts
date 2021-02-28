@@ -3,6 +3,7 @@ import * as Game from "../../Game.js";
 import * as UI from "../Objects/UI.js";
 import { GameObject, Interactable } from "../../System/Core/GameObject.js";
 import { BoxGeometry, Mesh, MeshBasicMaterial, Object3D, ObjectLoader, Scene, Vector3 } from '../../../libs/three/src/Three.js';
+import { Lever } from "../Objects/Lever.js";
 
 let collisionArray: Array<GameObject> = [];
 let interactionArray: Array<GameObject> = [];
@@ -52,15 +53,43 @@ export function load(): Scene{
     });
 
     //Création d'un levier qui change la couleur du cube d'interaction
-    /**var leverMaterial: MeshBasicMaterial = new MeshBasicMaterial( {color: 0xDEB887 } );
+    var leverMaterial: MeshBasicMaterial = new MeshBasicMaterial( {color: 0xDEB887 } );
     var leverBaseMaterial: MeshBasicMaterial = new MeshBasicMaterial( {color: 0xC5C3C2} );
     var leverMesh: Mesh = new Mesh(geometry, leverMaterial);
     var leverBaseMesh: Mesh = new Mesh(geometry, leverBaseMaterial);
 
-    leverBaseMesh.scale.x = 0.3;
-    leverBaseMesh.scale.y = 0.5;**/
+    var leverRotatePoint: Object3D = new Object3D();
+    leverRotatePoint.position.y = 0.075;
 
-    
+    let leverObj: Lever = new Lever("Basic Lever", (obj: Interactable) => {}, (lever: Lever) => {
+        if(lever.on){
+            material2.color.setHSL(120/360, 1, 1 - (0.5 * lever.time/lever.animTime));
+        } else {
+            material2.color.setHSL(120/360, 1, lever.time/lever.animTime * 0.5);
+        }
+
+    }, (lever: Lever) => {}, leverRotatePoint);
+    collisionArray.push(leverObj);
+    interactionArray.push(leverObj);
+    scene.add(leverObj);
+
+    leverBaseMesh.scale.x = 0.5;
+    leverBaseMesh.scale.y = 0.15;
+    leverBaseMesh.scale.z = 0.65;
+
+    leverObj.position.x = 2;
+    leverObj.position.y = 1.075;
+
+    leverMesh.scale.x = 0.1;
+    leverMesh.scale.y = 0.1;
+    leverMesh.scale.z = 0.5;
+
+    leverMesh.position.y = 0.1;
+    leverMesh.rotation.x = -Math.PI/2
+
+    leverRotatePoint.add(leverMesh);
+    leverObj.add(leverRotatePoint);
+    leverObj.add(leverBaseMesh);
 
     obj.position.y += 0.5; //On surélève les cubes de la moitié de leur hauteur, pour que leur bas soit à y = 0.
     obj.position.x = 2;
