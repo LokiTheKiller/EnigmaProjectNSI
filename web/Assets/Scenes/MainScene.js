@@ -2,8 +2,9 @@ import { Player } from "../Objects/Player.js";
 import * as Game from "../../Game.js";
 import * as UI from "../Objects/UI.js";
 import { GameObject, Interactable } from "../../System/Core/GameObject.js";
-import { BoxGeometry, Mesh, MeshBasicMaterial, Object3D, Scene } from '../../../libs/three/src/Three.js';
+import { BoxGeometry, Mesh, MeshBasicMaterial, Object3D, ObjectLoader, Scene, PlaneGeometry, TextureLoader, MeshPhongMaterial } from '../../../libs/three/src/Three.js';
 import { Lever } from "../Objects/Lever.js";
+import { degToRad } from "../../System/Maths.js";
 let collisionArray = [];
 let interactionArray = [];
 function addObject(mesh, name, collideable, scene) {
@@ -27,22 +28,34 @@ function addInteractable(mesh, name, collideable, scene, interaction) {
 }
 export function load() {
     var scene = new Scene();
-    /**
-    var map: GameObject = new GameObject("");
-    const loader: ObjectLoader = new ObjectLoader();
-    loader.load("scene.json", function(carte: Object3D) {
-        map = addObject(carte, "Map", true, false, scene);
-     })**/
+    const loader = new ObjectLoader();
+    var map = new GameObject("");
+    loader.load("./Assets/Textures/scene.json", function (carte) {
+        map = addObject(carte, "carte", true, scene);
+    });
     const geometry = new BoxGeometry();
     const material = new MeshBasicMaterial({ color: 0xBF0000 });
     const material2 = new MeshBasicMaterial({ color: 0xffffff });
+    var doorGeo = new PlaneGeometry(3.3, 5);
+    const texture = new TextureLoader().load('./Assets/Textures/wood_door_01.png');
+    var doorMaterial = new MeshPhongMaterial({ emissiveMap: texture, emissive: 0x2a2a2a });
+    var door = new Mesh(doorGeo, doorMaterial);
+    var door2 = new Mesh();
+    door2.copy(door);
+    var objDoor = addObject(door, "Door", true, scene);
+    var objDoor2 = addObject(door2, "Door2", true, scene);
+    objDoor.position.set(0, 2.5, 9.5);
+    objDoor.rotateY(degToRad(180));
+    objDoor2.position.set(0, 2.5, -9.5);
     var cube = new Mesh(geometry, material);
     var cube2 = new Mesh(geometry, material2);
     var obj = addObject(cube, "Basic Cube", true, scene);
     var obj2 = addInteractable(cube2, "Interactive cube", true, scene, (obj) => {
         UI.increment();
         scene.remove(obj);
+        scene.remove(objDoor);
         removeInteraction(obj);
+        removeCollision(obj);
     });
     //Création d'un levier qui change la couleur du cube d'interaction
     var leverMaterial = new MeshBasicMaterial({ color: 0xDEB887 });
