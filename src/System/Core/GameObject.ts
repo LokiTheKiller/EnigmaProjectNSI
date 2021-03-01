@@ -13,6 +13,8 @@ export class GameObject extends Object3D{
 
 export class Interactable extends GameObject{
     
+    interactable: boolean = true;
+
     constructor(name: string, interactCallback: (obj: Interactable) => void){
         super(name);
         this.interactCallback = interactCallback;

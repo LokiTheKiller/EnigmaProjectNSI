@@ -8,6 +8,7 @@ import { collisionArray, interactionArray } from "../Scenes/MainScene.js"
 
 export class Player extends GameObject{
 
+    speed: number = 5;
     iTarget: Interactable | undefined = undefined;
     camera: PerspectiveCamera | undefined = undefined;
     raycaster: Raycaster = new Raycaster();
@@ -58,10 +59,14 @@ export class Player extends GameObject{
         interactions = this.raycaster.intersectObjects(iter, true);
         if (interactions.length > 0 && interactions[0].distance <= distance)
         {
-            UI.showOnDebug("Press E to interact");
+            
             let parent: GameObject | null = Game.getParentGameObject(interactions[0].object);
             if(parent !== null && parent instanceof Interactable){
-                this.iTarget = parent;
+                if(parent.interactable){
+                    UI.showOnDebug("Press E to interact");
+                    this.iTarget = parent;
+                }
+                
             }
 
         } else {
@@ -97,8 +102,8 @@ export class Player extends GameObject{
             }
 
             if (!this.collision(x, z)){
-                this.camera.position.x += moveDir.y * 0.05;
-                this.camera.position.z += moveDir.x * 0.05;
+                this.camera.position.x += moveDir.y * this.speed * 1/60;
+                this.camera.position.z += moveDir.x * this.speed * 1/60;
             }
 
         }

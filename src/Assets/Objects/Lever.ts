@@ -29,8 +29,8 @@ export class Lever extends Interactable{
         if(this.animation){
             this.current = Maths.loopInRange(this.current + this.rotateTo(this.current, this.objective, -(this.getOrigin() - this.objective) * 1/(60*this.animTime)), -Math.PI, Math.PI);
             this.rotatePoint.rotation.x = this.current;
-            this.time += 1/(60*this.animTime);
             this.animate(this);
+            this.time += 1;
 
             if(this.current === this.objective){
                 this.complete(this);
@@ -71,6 +71,10 @@ export class Lever extends Interactable{
     rotateTo(origin: number, objective: number, maxRotate: number): number{
         let dist = objective - origin;
         return Math.min(Math.abs(dist), Math.abs(maxRotate)) === Math.abs(maxRotate) ? maxRotate:dist;
+    }
+
+    getTime01(): number{
+        return this.time * 1/(60*this.animTime);
     }
 
 }

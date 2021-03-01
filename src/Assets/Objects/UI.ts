@@ -4,9 +4,11 @@ var enigme = 0;
 
 export function increment()
 {
-    enigme++;
+    if(enigme < 6){
+        enigme++;
+    }
     if(text !== null){
-        text.innerHTML = `Enigme : ${enigme} / 8`;
+        text.innerHTML = `Enigme : ${enigme} / 6`;
     }
 
 }

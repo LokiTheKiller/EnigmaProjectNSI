@@ -50,29 +50,32 @@ export function load() {
     var cube = new Mesh(geometry, material);
     var cube2 = new Mesh(geometry, material2);
     var obj = addObject(cube, "Basic Cube", true, scene);
+    var leverRotatePoint = new Object3D();
+    leverRotatePoint.position.y = 0.075;
+    let leverObj = new Lever("Basic Lever", (obj) => { }, (lever) => {
+        if (lever.on) {
+            material2.color.setHSL(120 / 360, 1, 1 - (0.5 * lever.getTime01()));
+        }
+        else {
+            material2.color.setHSL(120 / 360, 1, 0.5 + (lever.getTime01() * 0.5));
+        }
+    }, (lever) => { }, leverRotatePoint);
     var obj2 = addInteractable(cube2, "Interactive cube", true, scene, (obj) => {
-        UI.increment();
-        scene.remove(obj);
-        scene.remove(objDoor);
-        removeInteraction(obj);
-        removeCollision(obj);
-        removeCollision(objDoor);
+        if (material2.color.getHex() === 0x00FF00) {
+            UI.increment();
+            scene.remove(obj);
+            scene.remove(objDoor);
+            removeInteraction(obj);
+            removeCollision(obj);
+            removeCollision(objDoor);
+            leverObj.interactable = false;
+        }
     });
     //Création d'un levier qui change la couleur du cube d'interaction
     var leverMaterial = new MeshBasicMaterial({ color: 0xDEB887 });
     var leverBaseMaterial = new MeshBasicMaterial({ color: 0xC5C3C2 });
     var leverMesh = new Mesh(geometry, leverMaterial);
     var leverBaseMesh = new Mesh(geometry, leverBaseMaterial);
-    var leverRotatePoint = new Object3D();
-    leverRotatePoint.position.y = 0.075;
-    let leverObj = new Lever("Basic Lever", (obj) => { }, (lever) => {
-        if (lever.on) {
-            material2.color.setHSL(120 / 360, 1, 1 - (0.5 * lever.time / lever.animTime));
-        }
-        else {
-            material2.color.setHSL(120 / 360, 1, lever.time / lever.animTime * 0.5);
-        }
-    }, (lever) => { }, leverRotatePoint);
     collisionArray.push(leverObj);
     interactionArray.push(leverObj);
     scene.add(leverObj);

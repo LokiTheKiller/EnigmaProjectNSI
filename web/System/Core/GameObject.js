@@ -9,6 +9,7 @@ export class GameObject extends Object3D {
 export class Interactable extends GameObject {
     constructor(name, interactCallback) {
         super(name);
+        this.interactable = true;
         this.interactCallback = interactCallback;
     }
     update() { }

@@ -8,6 +8,7 @@ import { collisionArray, interactionArray } from "../Scenes/MainScene.js";
 export class Player extends GameObject {
     constructor(name) {
         super(name);
+        this.speed = 5;
         this.iTarget = undefined;
         this.camera = undefined;
         this.raycaster = new Raycaster();
@@ -48,10 +49,12 @@ export class Player extends GameObject {
         this.raycaster.set(this.camera.position, cameraDir);
         interactions = this.raycaster.intersectObjects(iter, true);
         if (interactions.length > 0 && interactions[0].distance <= distance) {
-            UI.showOnDebug("Press E to interact");
             let parent = Game.getParentGameObject(interactions[0].object);
             if (parent !== null && parent instanceof Interactable) {
-                this.iTarget = parent;
+                if (parent.interactable) {
+                    UI.showOnDebug("Press E to interact");
+                    this.iTarget = parent;
+                }
             }
         }
         else {
@@ -81,8 +84,8 @@ export class Player extends GameObject {
                 moveDir = new Vector2(Math.cos(Maths.degToRad(targetAngle)), Math.sin(Maths.degToRad(targetAngle)));
             }
             if (!this.collision(x, z)) {
-                this.camera.position.x += moveDir.y * 0.05;
-                this.camera.position.z += moveDir.x * 0.05;
+                this.camera.position.x += moveDir.y * this.speed * 1 / 60;
+                this.camera.position.z += moveDir.x * this.speed * 1 / 60;
             }
         }
         if (this.iTarget !== undefined && Input.getKeyDown(69)) {
