@@ -9,7 +9,7 @@ var stageAnswer = colors[Math.floor(Math.random() * 8)];
 var currentStage = 0;
 var solved = false;
 var candles = new Array(3).fill(false);
-export function checkStage() {
+function checkStage() {
     if (solved) {
         return;
     }

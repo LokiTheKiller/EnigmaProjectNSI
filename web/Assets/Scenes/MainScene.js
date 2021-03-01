@@ -33,8 +33,6 @@ export function load() {
         map = addObject(carte, "carte", true, scene);
     });
     const geometry = new BoxGeometry();
-    const material = new MeshBasicMaterial({ color: 0xBF0000 });
-    const material2 = new MeshBasicMaterial({ color: 0xffffff });
     var doorGeo = new PlaneGeometry(3.3, 5);
     const texture = new TextureLoader().load('./Assets/Textures/wood_door_01.png');
     var doorMaterial = new MeshPhongMaterial({ emissiveMap: texture, emissive: 0x2a2a2a });
@@ -46,9 +44,6 @@ export function load() {
     objDoor.position.set(0, 2.5, 9.5);
     objDoor.rotateY(degToRad(180));
     objDoor2.position.set(0, 2.5, -9.5);
-    var cube = new Mesh(geometry, material);
-    var cube2 = new Mesh(geometry, material2);
-    var obj = addObject(cube, "Basic Cube", true, scene);
     /**var leverRotatePoint: Object3D = new Object3D();
     leverRotatePoint.position.y = 0.075;
     let leverObj: Lever = new Lever("Basic Lever", (obj: Interactable) => {}, (lever: Lever) => {
@@ -98,10 +93,6 @@ export function load() {
     leverRotatePoint.add(leverMesh);
     leverObj.add(leverRotatePoint);
     leverObj.add(leverBaseMesh);**/
-    obj.position.y += 0.5; //On surélève les cubes de la moitié de leur hauteur, pour que leur bas soit à y = 0.
-    obj.position.x = 2;
-    //obj2.position.z = 3; //Sinon, ils sont enfoncés dans le sol à l'ajout de la carte.
-    //obj2.position.y += 0.5;
     ColoredCandles.setDoor(objDoor);
     ColoredCandles.createEnigma(scene);
     var piece2 = new GameObject("");

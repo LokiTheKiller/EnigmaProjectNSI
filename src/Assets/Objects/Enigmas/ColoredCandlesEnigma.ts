@@ -15,7 +15,7 @@ var solved: boolean = false;
 
 var candles: boolean[] = new Array(3).fill(false);
 
-export function checkStage(): void{
+function checkStage(): void{
     if(solved){
         return;
     }
