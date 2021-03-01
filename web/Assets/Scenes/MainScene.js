@@ -56,6 +56,7 @@ export function load() {
         scene.remove(objDoor);
         removeInteraction(obj);
         removeCollision(obj);
+        removeCollision(objDoor);
     });
     //Création d'un levier qui change la couleur du cube d'interaction
     var leverMaterial = new MeshBasicMaterial({ color: 0xDEB887 });
@@ -92,6 +93,23 @@ export function load() {
     obj.position.x = 2;
     obj2.position.z = 3; //Sinon, ils sont enfoncés dans le sol à l'ajout de la carte.
     obj2.position.y += 0.5;
+    var piece2 = new GameObject("");
+    loader.load("./Assets/Textures/scene2.json", function (carte) {
+        piece2 = addObject(carte, "carte2", true, scene);
+        piece2.position.z = 25;
+        piece2.rotateY(degToRad(-90));
+    });
+    var door3 = new Mesh(doorGeo, doorMaterial);
+    var objDoor3 = addObject(door3, "Door3", true, scene);
+    objDoor3.position.set(0, 2.5, 29.5);
+    objDoor3.rotateY(degToRad(180));
+    var trapdoorGeo = new PlaneGeometry(2, 2.3);
+    const trapdoorTexture = new TextureLoader().load('./Assets/Textures/trapdoor.jpg');
+    var trapdoorMaterial = new MeshPhongMaterial({ emissiveMap: trapdoorTexture, emissive: 0x2a2a2a });
+    var trapdoorMesh = new Mesh(trapdoorGeo, trapdoorMaterial);
+    var objTrapdoor = addObject(trapdoorMesh, "trapdoor", true, scene);
+    objTrapdoor.position.z = 22.85;
+    objTrapdoor.rotateX(degToRad(-90));
     var player = new Player("Player Test");
     player.camera = Game.getHandler().camera;
     player.camera.position.y = 1.8; //mise de la caméra à hauteur "humaine".

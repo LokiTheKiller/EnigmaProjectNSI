@@ -2,7 +2,7 @@ import { Player } from "../Objects/Player.js";
 import * as Game from "../../Game.js";
 import * as UI from "../Objects/UI.js";
 import { GameObject, Interactable } from "../../System/Core/GameObject.js";
-import { BoxGeometry, Mesh, MeshBasicMaterial, Object3D, ObjectLoader, Scene, PlaneGeometry, TextureLoader, MeshPhongMaterial } from '../../../libs/three/src/Three.js';
+import { BoxGeometry, Texture, Mesh, MeshBasicMaterial, Object3D, ObjectLoader, Scene, PlaneGeometry, TextureLoader, MeshPhongMaterial } from '../../../libs/three/src/Three.js';
 import { Lever } from "../Objects/Lever.js";
 import { degToRad } from "../../System/Maths.js"
 
@@ -35,6 +35,8 @@ function addInteractable(mesh: Mesh, name: string, collideable: boolean, scene: 
 
 export function load(): Scene{
     var scene: Scene = new Scene();
+
+
     const loader: ObjectLoader = new ObjectLoader();
     var map: GameObject = new GameObject("");
     loader.load("./Assets/Textures/scene.json", function(carte: Object3D) {
@@ -63,6 +65,7 @@ export function load(): Scene{
         scene.remove(objDoor);
         removeInteraction(obj);
         removeCollision(obj);
+        removeCollision(objDoor);
     });
 
     //Création d'un levier qui change la couleur du cube d'interaction
@@ -108,6 +111,26 @@ export function load(): Scene{
     obj.position.x = 2;
     obj2.position.z = 3; //Sinon, ils sont enfoncés dans le sol à l'ajout de la carte.
     obj2.position.y += 0.5;
+
+
+    var piece2: GameObject = new GameObject("");
+    loader.load("./Assets/Textures/scene2.json", function(carte: Object3D) {
+        piece2 = addObject(carte, "carte2", true, scene);
+        piece2.position.z = 25;
+        piece2.rotateY(degToRad(-90));
+     })
+    var door3: Mesh = new Mesh(doorGeo, doorMaterial);
+    var objDoor3: GameObject = addObject(door3, "Door3", true, scene);
+    objDoor3.position.set(0, 2.5, 29.5);
+    objDoor3.rotateY(degToRad(180));
+    var trapdoorGeo: PlaneGeometry = new PlaneGeometry(2, 2.3);
+    const trapdoorTexture: Texture = new TextureLoader().load('./Assets/Textures/trapdoor.jpg');
+    var trapdoorMaterial: MeshPhongMaterial = new MeshPhongMaterial( { emissiveMap: trapdoorTexture, emissive: 0x2a2a2a} );
+    var trapdoorMesh: Mesh = new Mesh(trapdoorGeo, trapdoorMaterial);
+    var objTrapdoor:GameObject = addObject(trapdoorMesh, "trapdoor", true, scene);
+    objTrapdoor.position.z = 22.85;
+    objTrapdoor.rotateX(degToRad(-90));
+
     var player: Player = new Player("Player Test");
     player.camera = Game.getHandler().camera;
     player.camera.position.y = 1.8; //mise de la caméra à hauteur "humaine".
