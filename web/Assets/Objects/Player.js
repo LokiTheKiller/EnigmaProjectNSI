@@ -9,6 +9,8 @@ export class Player extends GameObject {
     constructor(name) {
         super(name);
         this.speed = 5;
+        this.currentSpeed = 0;
+        this.lock = false;
         this.iTarget = undefined;
         this.camera = undefined;
         this.raycaster = new Raycaster();
@@ -65,6 +67,10 @@ export class Player extends GameObject {
     update() {
         let v = Input.asAxis(90, 83);
         let h = Input.asAxis(81, 68);
+        if (this.lock) {
+            v = 0;
+            h = 0;
+        }
         let x = 0;
         let z = 0;
         let moveDir = new Vector2(0, 0);
@@ -82,10 +88,20 @@ export class Player extends GameObject {
                 x = Math.cos(Maths.degToRad(targetAngle));
                 z = Math.sin(Maths.degToRad(targetAngle));
                 moveDir = new Vector2(Math.cos(Maths.degToRad(targetAngle)), Math.sin(Maths.degToRad(targetAngle)));
+                if (this.currentSpeed < this.speed) {
+                    this.currentSpeed += this.speed * 1 / 60;
+                }
+            }
+            else {
+                if (this.currentSpeed > 0) {
+                    let targetAngle = Maths.radToDeg(this.rotate.y) + 180;
+                    moveDir = new Vector2(Math.cos(Maths.degToRad(targetAngle)), Math.sin(Maths.degToRad(targetAngle)));
+                    this.currentSpeed -= this.speed * 1 / 60;
+                }
             }
             if (!this.collision(x, z)) {
-                this.camera.position.x += moveDir.y * this.speed * 1 / 60;
-                this.camera.position.z += moveDir.x * this.speed * 1 / 60;
+                this.camera.position.x += moveDir.y * this.currentSpeed * 1 / 60;
+                this.camera.position.z += moveDir.x * this.currentSpeed * 1 / 60;
             }
         }
         if (this.iTarget !== undefined && Input.getKeyDown(69)) {
