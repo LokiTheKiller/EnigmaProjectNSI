@@ -1,10 +1,10 @@
 import { Player } from "../Objects/Player.js";
 import * as Game from "../../Game.js";
-import * as UI from "../Objects/UI.js";
 import { GameObject, Interactable } from "../../System/Core/GameObject.js";
-import { BoxGeometry, Mesh, MeshBasicMaterial, Object3D, ObjectLoader, Scene, PlaneGeometry, TextureLoader, MeshPhongMaterial } from '../../../libs/three/src/Three.js';
-import { Lever } from "../Objects/Lever.js";
+import { BoxGeometry, Mesh, MeshBasicMaterial, ObjectLoader, Scene, PlaneGeometry, TextureLoader, MeshPhongMaterial } from '../../../libs/three/src/Three.js';
 import { degToRad } from "../../System/Maths.js";
+import * as ColoredCandles from "../Objects/Enigmas/ColoredCandlesEnigma.js";
+export var scene = new Scene();
 let collisionArray = [];
 let interactionArray = [];
 function addObject(mesh, name, collideable, scene) {
@@ -27,7 +27,6 @@ function addInteractable(mesh, name, collideable, scene, interaction) {
     return obj;
 }
 export function load() {
-    var scene = new Scene();
     const loader = new ObjectLoader();
     var map = new GameObject("");
     loader.load("./Assets/Textures/scene.json", function (carte) {
@@ -50,18 +49,19 @@ export function load() {
     var cube = new Mesh(geometry, material);
     var cube2 = new Mesh(geometry, material2);
     var obj = addObject(cube, "Basic Cube", true, scene);
-    var leverRotatePoint = new Object3D();
+    /**var leverRotatePoint: Object3D = new Object3D();
     leverRotatePoint.position.y = 0.075;
-    let leverObj = new Lever("Basic Lever", (obj) => { }, (lever) => {
-        if (lever.on) {
-            material2.color.setHSL(120 / 360, 1, 1 - (0.5 * lever.getTime01()));
+    let leverObj: Lever = new Lever("Basic Lever", (obj: Interactable) => {}, (lever: Lever) => {
+        if(lever.on){
+            material2.color.setHSL(120/360, 1, 1 - (0.5 * lever.getTime01()));
+        } else {
+            material2.color.setHSL(120/360, 1, 0.5 + (lever.getTime01() * 0.5));
         }
-        else {
-            material2.color.setHSL(120 / 360, 1, 0.5 + (lever.getTime01() * 0.5));
-        }
-    }, (lever) => { }, leverRotatePoint);
-    var obj2 = addInteractable(cube2, "Interactive cube", true, scene, (obj) => {
-        if (material2.color.getHex() === 0x00FF00) {
+
+    }, (lever: Lever) => {}, leverRotatePoint);
+
+    var obj2: Interactable = addInteractable(cube2, "Interactive cube", true, scene, (obj: Interactable) => {
+        if(material2.color.getHex() === 0x00FF00){
             UI.increment();
             scene.remove(obj);
             scene.remove(objDoor);
@@ -70,32 +70,40 @@ export function load() {
             removeCollision(objDoor);
             leverObj.interactable = false;
         }
-    });
+
+    });**/
     //Création d'un levier qui change la couleur du cube d'interaction
     var leverMaterial = new MeshBasicMaterial({ color: 0xDEB887 });
     var leverBaseMaterial = new MeshBasicMaterial({ color: 0xC5C3C2 });
     var leverMesh = new Mesh(geometry, leverMaterial);
     var leverBaseMesh = new Mesh(geometry, leverBaseMaterial);
-    collisionArray.push(leverObj);
+    /**collisionArray.push(leverObj);
     interactionArray.push(leverObj);
     scene.add(leverObj);
+
     leverBaseMesh.scale.x = 0.5;
     leverBaseMesh.scale.y = 0.15;
     leverBaseMesh.scale.z = 0.65;
+
     leverObj.position.x = 2;
     leverObj.position.y = 1.075;
+
     leverMesh.scale.x = 0.1;
     leverMesh.scale.y = 0.1;
     leverMesh.scale.z = 0.5;
+
     leverMesh.position.y = 0.1;
-    leverMesh.rotation.x = -Math.PI / 2;
+    leverMesh.rotation.x = -Math.PI/2
+
     leverRotatePoint.add(leverMesh);
     leverObj.add(leverRotatePoint);
-    leverObj.add(leverBaseMesh);
+    leverObj.add(leverBaseMesh);**/
     obj.position.y += 0.5; //On surélève les cubes de la moitié de leur hauteur, pour que leur bas soit à y = 0.
     obj.position.x = 2;
-    obj2.position.z = 3; //Sinon, ils sont enfoncés dans le sol à l'ajout de la carte.
-    obj2.position.y += 0.5;
+    //obj2.position.z = 3; //Sinon, ils sont enfoncés dans le sol à l'ajout de la carte.
+    //obj2.position.y += 0.5;
+    ColoredCandles.setDoor(objDoor);
+    ColoredCandles.createEnigma(scene);
     var piece2 = new GameObject("");
     loader.load("./Assets/Textures/scene2.json", function (carte) {
         piece2 = addObject(carte, "carte2", true, scene);

@@ -42,7 +42,7 @@ export class Player extends GameObject {
             return;
         }
         const iter = interactionArray;
-        const distance = 1;
+        const distance = 2.5;
         let interactions;
         let cameraDir = new Vector3();
         this.camera.getWorldDirection(cameraDir);

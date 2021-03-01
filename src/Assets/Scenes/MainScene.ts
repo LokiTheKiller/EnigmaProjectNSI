@@ -6,6 +6,10 @@ import { BoxGeometry, Texture, Mesh, MeshBasicMaterial, Object3D, ObjectLoader, 
 import { Lever } from "../Objects/Lever.js";
 import { degToRad } from "../../System/Maths.js"
 
+import * as ColoredCandles from "../Objects/Enigmas/ColoredCandlesEnigma.js"
+
+export var scene: Scene = new Scene();
+
 let collisionArray: Array<GameObject> = [];
 let interactionArray: Array<GameObject> = [];
 
@@ -34,9 +38,6 @@ function addInteractable(mesh: Mesh, name: string, collideable: boolean, scene: 
 }
 
 export function load(): Scene{
-    var scene: Scene = new Scene();
-
-
     const loader: ObjectLoader = new ObjectLoader();
     var map: GameObject = new GameObject("");
     loader.load("./Assets/Textures/scene.json", function(carte: Object3D) {
@@ -60,7 +61,7 @@ export function load(): Scene{
     var cube2: Mesh = new Mesh(geometry, material2);
     var obj: GameObject = addObject(cube, "Basic Cube", true, scene);
 
-    var leverRotatePoint: Object3D = new Object3D();
+    /**var leverRotatePoint: Object3D = new Object3D();
     leverRotatePoint.position.y = 0.075;
     let leverObj: Lever = new Lever("Basic Lever", (obj: Interactable) => {}, (lever: Lever) => {
         if(lever.on){
@@ -82,7 +83,7 @@ export function load(): Scene{
             leverObj.interactable = false;
         }
 
-    });
+    });**/
 
     //Création d'un levier qui change la couleur du cube d'interaction
     var leverMaterial: MeshBasicMaterial = new MeshBasicMaterial( {color: 0xDEB887 } );
@@ -90,7 +91,7 @@ export function load(): Scene{
     var leverMesh: Mesh = new Mesh(geometry, leverMaterial);
     var leverBaseMesh: Mesh = new Mesh(geometry, leverBaseMaterial);
     
-    collisionArray.push(leverObj);
+    /**collisionArray.push(leverObj);
     interactionArray.push(leverObj);
     scene.add(leverObj);
 
@@ -110,13 +111,15 @@ export function load(): Scene{
 
     leverRotatePoint.add(leverMesh);
     leverObj.add(leverRotatePoint);
-    leverObj.add(leverBaseMesh);
+    leverObj.add(leverBaseMesh);**/
 
     obj.position.y += 0.5; //On surélève les cubes de la moitié de leur hauteur, pour que leur bas soit à y = 0.
     obj.position.x = 2;
-    obj2.position.z = 3; //Sinon, ils sont enfoncés dans le sol à l'ajout de la carte.
-    obj2.position.y += 0.5;
+    //obj2.position.z = 3; //Sinon, ils sont enfoncés dans le sol à l'ajout de la carte.
+    //obj2.position.y += 0.5;
 
+    ColoredCandles.setDoor(objDoor);
+    ColoredCandles.createEnigma(scene);
 
     var piece2: GameObject = new GameObject("");
     loader.load("./Assets/Textures/scene2.json", function(carte: Object3D) {
