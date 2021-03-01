@@ -99,13 +99,19 @@ export function load() {
     var piece2 = new GameObject("");
     loader.load("./Assets/Textures/scene2.json", function (carte) {
         piece2 = addObject(carte, "carte2", true, scene);
-        piece2.position.z = 25;
+        piece2.position.z = 15;
         piece2.rotateY(degToRad(-90));
     });
-    var door3 = new Mesh(doorGeo, doorMaterial);
-    var objDoor3 = addObject(door3, "Door3", true, scene);
-    objDoor3.position.set(0, 2.5, 29.5);
-    objDoor3.rotateY(degToRad(180));
+    var piece3 = new GameObject("");
+    loader.load("./Assets/Textures/scene3.json", function (carte) {
+        piece3 = addObject(carte, "carte3", true, scene);
+        piece3.position.z = 25;
+        piece3.rotateY(degToRad(-90));
+    });
+    var door4 = new Mesh(doorGeo, doorMaterial);
+    var objDoor4 = addObject(door4, "Door4", true, scene);
+    objDoor4.position.set(0, 2.5, 29.5);
+    objDoor4.rotateY(degToRad(180));
     var trapdoorGeo = new PlaneGeometry(2, 2.3);
     const trapdoorTexture = new TextureLoader().load('./Assets/Textures/trapdoor.jpg');
     var trapdoorMaterial = new MeshPhongMaterial({ emissiveMap: trapdoorTexture, emissive: 0x2a2a2a });
