@@ -50,11 +50,11 @@ export function load(): Scene{
     var door: Mesh = new Mesh(doorGeo, doorMaterial);
     var door2: Mesh = new Mesh();
     door2.copy(door);
-    var objDoor: GameObject = addObject(door, "Door", true, scene);
+    var objDoor: GameObject = addObject(door, "Door", false, scene);
     var objDoor2: GameObject = addObject(door2, "Door2", true, scene);
-    objDoor.position.set(0, 2.5, 9.5);
+    objDoor.position.set(0, 2.5, 10);
     objDoor.rotateY(degToRad(180));
-    objDoor2.position.set(0, 2.5, -9.5);
+    objDoor2.position.set(0, 2.5, -10);
 
     /**var leverRotatePoint: Object3D = new Object3D();
     leverRotatePoint.position.y = 0.075;
@@ -118,7 +118,11 @@ export function load(): Scene{
         piece2.position.z = 15;
         piece2.rotateY(degToRad(-90));
      })
-
+    var door3: Mesh = new Mesh(doorGeo, doorMaterial);
+    var objDoor3: GameObject = addObject(door3, "Door3", false, scene);
+ 
+    objDoor3.position.set(0, 2.5, 20);
+    objDoor3.rotateY(degToRad(180));
 
     var piece3: GameObject = new GameObject("");
     loader.load("./Assets/Textures/scene3.json", function(carte: Object3D) {
@@ -127,9 +131,11 @@ export function load(): Scene{
         piece3.rotateY(degToRad(-90));
      })
     var door4: Mesh = new Mesh(doorGeo, doorMaterial);
-    var objDoor4: GameObject = addObject(door4, "Door4", true, scene);
-    objDoor4.position.set(0, 2.5, 29.5);
+    var objDoor4: GameObject = addObject(door4, "Door4", false, scene);
+
+    objDoor4.position.set(0, 2.5, 30);
     objDoor4.rotateY(degToRad(180));
+
     var trapdoorGeo: PlaneGeometry = new PlaneGeometry(2, 2.3);
     const trapdoorTexture: Texture = new TextureLoader().load('./Assets/Textures/trapdoor.jpg');
     var trapdoorMaterial: MeshPhongMaterial = new MeshPhongMaterial( { emissiveMap: trapdoorTexture, emissive: 0x2a2a2a} );
@@ -137,6 +143,14 @@ export function load(): Scene{
     var objTrapdoor:GameObject = addObject(trapdoorMesh, "trapdoor", true, scene);
     objTrapdoor.position.z = 22.85;
     objTrapdoor.rotateX(degToRad(-90));
+
+
+    var piece4: GameObject = new GameObject("");
+    loader.load("./Assets/Textures/scene4.json", function(carte: Object3D) {
+        piece4 = addObject(carte, "carte4", true, scene);
+        piece4.position.z = 40;
+     })
+
 
     var player: Player = new Player("Player Test");
     player.camera = Game.getHandler().camera;

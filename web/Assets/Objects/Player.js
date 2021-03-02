@@ -25,7 +25,7 @@ export class Player extends GameObject {
         const obstacles = collisionArray;
         let collisions;
         let posTete = this.camera.position; //PosTete et pied, pour simuler un personnage et pas simplement une caméra volante.
-        let posPied = new Vector3(this.camera.position.x, this.camera.position.y - 1.79, this.camera.position.z);
+        let posPied = new Vector3(this.camera.position.x, this.camera.position.y - 1.78, this.camera.position.z);
         this.raycaster.set(posTete, new Vector3(z, 0, x));
         collisions = this.raycaster.intersectObjects(obstacles, true);
         if (collisions.length > 0 && collisions[0].distance <= distance) //On verifie si il y a collision au niveau de la tête,

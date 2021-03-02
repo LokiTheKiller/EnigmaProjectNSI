@@ -39,11 +39,11 @@ export function load() {
     var door = new Mesh(doorGeo, doorMaterial);
     var door2 = new Mesh();
     door2.copy(door);
-    var objDoor = addObject(door, "Door", true, scene);
+    var objDoor = addObject(door, "Door", false, scene);
     var objDoor2 = addObject(door2, "Door2", true, scene);
-    objDoor.position.set(0, 2.5, 9.5);
+    objDoor.position.set(0, 2.5, 10);
     objDoor.rotateY(degToRad(180));
-    objDoor2.position.set(0, 2.5, -9.5);
+    objDoor2.position.set(0, 2.5, -10);
     /**var leverRotatePoint: Object3D = new Object3D();
     leverRotatePoint.position.y = 0.075;
     let leverObj: Lever = new Lever("Basic Lever", (obj: Interactable) => {}, (lever: Lever) => {
@@ -102,6 +102,10 @@ export function load() {
         piece2.position.z = 15;
         piece2.rotateY(degToRad(-90));
     });
+    var door3 = new Mesh(doorGeo, doorMaterial);
+    var objDoor3 = addObject(door3, "Door3", false, scene);
+    objDoor3.position.set(0, 2.5, 20);
+    objDoor3.rotateY(degToRad(180));
     var piece3 = new GameObject("");
     loader.load("./Assets/Textures/scene3.json", function (carte) {
         piece3 = addObject(carte, "carte3", true, scene);
@@ -109,8 +113,8 @@ export function load() {
         piece3.rotateY(degToRad(-90));
     });
     var door4 = new Mesh(doorGeo, doorMaterial);
-    var objDoor4 = addObject(door4, "Door4", true, scene);
-    objDoor4.position.set(0, 2.5, 29.5);
+    var objDoor4 = addObject(door4, "Door4", false, scene);
+    objDoor4.position.set(0, 2.5, 30);
     objDoor4.rotateY(degToRad(180));
     var trapdoorGeo = new PlaneGeometry(2, 2.3);
     const trapdoorTexture = new TextureLoader().load('./Assets/Textures/trapdoor.jpg');
@@ -119,6 +123,11 @@ export function load() {
     var objTrapdoor = addObject(trapdoorMesh, "trapdoor", true, scene);
     objTrapdoor.position.z = 22.85;
     objTrapdoor.rotateX(degToRad(-90));
+    var piece4 = new GameObject("");
+    loader.load("./Assets/Textures/scene4.json", function (carte) {
+        piece4 = addObject(carte, "carte4", true, scene);
+        piece4.position.z = 40;
+    });
     var player = new Player("Player Test");
     player.camera = Game.getHandler().camera;
     player.camera.position.y = 1.8; //mise de la caméra à hauteur "humaine".
