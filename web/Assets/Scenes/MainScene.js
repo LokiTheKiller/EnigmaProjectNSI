@@ -93,6 +93,7 @@ export function load() {
     leverRotatePoint.add(leverMesh);
     leverObj.add(leverRotatePoint);
     leverObj.add(leverBaseMesh);**/
+    ColoredCandles.init();
     ColoredCandles.setDoor(objDoor);
     ColoredCandles.createEnigma(scene);
     var piece2 = new GameObject("");

@@ -2,13 +2,14 @@ import { GameObject, Interactable } from "../../System/Core/GameObject.js";
 import * as Maths from "../../System/Maths.js";
 import * as Game from "../../Game.js";
 import * as Input from "../../System/Input/Input.js";
-import { PerspectiveCamera, Vector2, Vector3, Raycaster, Intersection, Euler, Scene } from "../../../libs/three/src/Three.js";
+import { PerspectiveCamera, Vector2, Vector3, Raycaster, Intersection, Euler } from "../../../libs/three/src/Three.js";
 import * as UI from "../Objects/UI.js"
 import { collisionArray, interactionArray } from "../Scenes/MainScene.js"
 
 export class Player extends GameObject{
 
-    speed: number = 5;
+    targetAngle: number = 0;
+    speed: number = 6;
     currentSpeed: number = 0;
     lock: boolean = false;
     iTarget: Interactable | undefined = undefined;
@@ -26,7 +27,7 @@ export class Player extends GameObject{
         {
             return true;
         }
-        const distance:number = 0.32;
+        const distance:number = 0.4;
         const obstacles:Array<GameObject> = collisionArray;
         let collisions:Array<Intersection>;
         let posTete:Vector3 = this.camera.position; //PosTete et pied, pour simuler un personnage et pas simplement une caméra volante.
@@ -101,19 +102,18 @@ export class Player extends GameObject{
 
             if(Math.sqrt(v * v + h * h) !== 0){
                 let angle: number = Maths.radToDeg(Math.atan2(h, v));
-                let targetAngle: number = Maths.radToDeg(this.rotate.y) + angle;
-                x = Math.cos(Maths.degToRad(targetAngle));
-                z = Math.sin(Maths.degToRad(targetAngle));
-                moveDir = new Vector2(Math.cos(Maths.degToRad(targetAngle)), Math.sin(Maths.degToRad(targetAngle)));
+                this.targetAngle = Maths.radToDeg(this.rotate.y) + angle;
+                x = Math.cos(Maths.degToRad(this.targetAngle));
+                z = Math.sin(Maths.degToRad(this.targetAngle));
+                moveDir = new Vector2(Math.cos(Maths.degToRad(this.targetAngle)), Math.sin(Maths.degToRad(this.targetAngle)));
                 if(this.currentSpeed < this.speed){
-                    this.currentSpeed += this.speed * 1/60;
+                    this.currentSpeed += this.speed * 1/30;
                 }
 
             } else {
                 if(this.currentSpeed > 0){
-                    let targetAngle: number = Maths.radToDeg(this.rotate.y) + 180;
-                    moveDir = new Vector2(Math.cos(Maths.degToRad(targetAngle)), Math.sin(Maths.degToRad(targetAngle)));
-                    this.currentSpeed -= this.speed * 1/60;
+                    moveDir = new Vector2(Math.cos(Maths.degToRad(this.targetAngle)), Math.sin(Maths.degToRad(this.targetAngle)));
+                    this.currentSpeed -= this.speed * 1/30;
                 }
 
             }

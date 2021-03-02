@@ -1,11 +1,29 @@
 import { GameObject, Interactable } from "../../../System/Core/GameObject.js";
-import { BoxGeometry, Color, Mesh, MeshPhongMaterial, PointLight, Scene } from "../../../../libs/three/src/Three.js";
-import { interactionArray, removeCollision, removeInteraction, scene } from "../../Scenes/MainScene.js";
+import { Audio, AudioListener, AudioLoader, BoxGeometry, Color, Mesh, MeshPhongMaterial, PointLight, Scene } from "../../../../libs/three/src/Three.js";
+import { interactionArray, removeCollision, scene } from "../../Scenes/MainScene.js";
+import * as Game from "../../../Game.js";
 import * as UI from "../../Objects/UI.js";
 
 export var door: GameObject = new GameObject("Null");
 
 var colors: number[] = [0, 1, 2, 3, 4, 5, 6, 7];
+var fireBurstSound = new Audio(new AudioListener());
+var fireSound = new Audio(new AudioListener());
+
+export function init(){
+    fireBurstSound = new Audio(Game.getHandler().audioListener);
+    fireSound = new Audio(Game.getHandler().audioListener);
+    const loader = new AudioLoader();
+    loader.load("./Assets/Sounds/fire-burst.mp3", function(buffer: AudioBuffer) {
+        fireBurstSound.setBuffer(buffer);
+        fireBurstSound.setVolume(0.1);
+    });
+    loader.load("./Assets/Sounds/fire.mp3", function(buffer: AudioBuffer){
+        fireSound.setBuffer(buffer);
+        fireSound.setVolume(0.1);
+    });
+
+}
 
 var ansLight: PointLight = new PointLight();
 
@@ -30,7 +48,11 @@ function checkStage(): void{
     if(check){
         colors.filter(function(color: number){ return color !== stageAnswer });
         stageAnswer = colors[Math.floor(Math.random()*colors.length)];
-        
+        if(fireBurstSound.isPlaying){
+            fireBurstSound.stop();
+        }
+        fireBurstSound.play();
+
         if(currentStage == 2){
             solved = true;
             UI.increment();
@@ -98,18 +120,27 @@ export function createEnigma(scene: Scene): void{
 
     let rInteract = function(){
         candles[2] = !candles[2];
+        if(candles[2]){
+            fireSound.play();
+        }
         rLight.intensity = candles[2] ? 1:0;
         checkStage();
     }
 
     let gInteract = function(){
         candles[1] = !candles[1];
+        if(candles[1]){
+            fireSound.play();
+        }
         gLight.intensity = candles[1] ? 1:0;
         checkStage();
     }
 
     let bInteract = function(){
         candles[0] = !candles[0];
+        if(candles[0]){
+            fireSound.play();
+        }
         bLight.intensity = candles[0] ? 1:0;
         checkStage();
     }

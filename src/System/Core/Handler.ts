@@ -1,12 +1,15 @@
 import { GameObject } from "./GameObject.js";
-import { Object3D, PerspectiveCamera, Scene } from "../../../libs/three/src/Three.js";
+import { Object3D, PerspectiveCamera, Scene, AudioListener } from "../../../libs/three/src/Three.js";
 
 export class Handler {
 
     scene: Scene | null = null;
     camera: PerspectiveCamera = new PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 1000);
+    audioListener: AudioListener = new AudioListener();
 
-    constructor(){}
+    constructor(){
+        this.camera.add(this.audioListener);
+    }
 
     getScene(): Scene | null{
         return this.scene;

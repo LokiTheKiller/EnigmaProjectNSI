@@ -8,7 +8,8 @@ import { collisionArray, interactionArray } from "../Scenes/MainScene.js";
 export class Player extends GameObject {
     constructor(name) {
         super(name);
-        this.speed = 5;
+        this.targetAngle = 0;
+        this.speed = 6;
         this.currentSpeed = 0;
         this.lock = false;
         this.iTarget = undefined;
@@ -20,7 +21,7 @@ export class Player extends GameObject {
         if (this.camera === undefined) {
             return true;
         }
-        const distance = 0.32;
+        const distance = 0.4;
         const obstacles = collisionArray;
         let collisions;
         let posTete = this.camera.position; //PosTete et pied, pour simuler un personnage et pas simplement une caméra volante.
@@ -84,19 +85,18 @@ export class Player extends GameObject {
             this.camera.quaternion.setFromEuler(euler);
             if (Math.sqrt(v * v + h * h) !== 0) {
                 let angle = Maths.radToDeg(Math.atan2(h, v));
-                let targetAngle = Maths.radToDeg(this.rotate.y) + angle;
-                x = Math.cos(Maths.degToRad(targetAngle));
-                z = Math.sin(Maths.degToRad(targetAngle));
-                moveDir = new Vector2(Math.cos(Maths.degToRad(targetAngle)), Math.sin(Maths.degToRad(targetAngle)));
+                this.targetAngle = Maths.radToDeg(this.rotate.y) + angle;
+                x = Math.cos(Maths.degToRad(this.targetAngle));
+                z = Math.sin(Maths.degToRad(this.targetAngle));
+                moveDir = new Vector2(Math.cos(Maths.degToRad(this.targetAngle)), Math.sin(Maths.degToRad(this.targetAngle)));
                 if (this.currentSpeed < this.speed) {
-                    this.currentSpeed += this.speed * 1 / 60;
+                    this.currentSpeed += this.speed * 1 / 30;
                 }
             }
             else {
                 if (this.currentSpeed > 0) {
-                    let targetAngle = Maths.radToDeg(this.rotate.y) + 180;
-                    moveDir = new Vector2(Math.cos(Maths.degToRad(targetAngle)), Math.sin(Maths.degToRad(targetAngle)));
-                    this.currentSpeed -= this.speed * 1 / 60;
+                    moveDir = new Vector2(Math.cos(Maths.degToRad(this.targetAngle)), Math.sin(Maths.degToRad(this.targetAngle)));
+                    this.currentSpeed -= this.speed * 1 / 30;
                 }
             }
             if (!this.collision(x, z)) {

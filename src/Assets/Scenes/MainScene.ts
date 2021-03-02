@@ -108,6 +108,7 @@ export function load(): Scene{
     leverObj.add(leverRotatePoint);
     leverObj.add(leverBaseMesh);**/
 
+    ColoredCandles.init();
     ColoredCandles.setDoor(objDoor);
     ColoredCandles.createEnigma(scene);
 
