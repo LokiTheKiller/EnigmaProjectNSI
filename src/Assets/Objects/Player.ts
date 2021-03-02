@@ -103,8 +103,6 @@ export class Player extends GameObject{
             if(Math.sqrt(v * v + h * h) !== 0){
                 let angle: number = Maths.radToDeg(Math.atan2(h, v));
                 this.targetAngle = Maths.radToDeg(this.rotate.y) + angle;
-                x = Math.cos(Maths.degToRad(this.targetAngle));
-                z = Math.sin(Maths.degToRad(this.targetAngle));
                 moveDir = new Vector2(Math.cos(Maths.degToRad(this.targetAngle)), Math.sin(Maths.degToRad(this.targetAngle)));
                 if(this.currentSpeed < this.speed){
                     this.currentSpeed += this.speed * 1/30;
@@ -118,7 +116,7 @@ export class Player extends GameObject{
 
             }
 
-            if (!this.collision(x, z)){
+            if (!this.collision(moveDir.x, moveDir.y)){
                 this.camera.position.x += moveDir.y * this.currentSpeed * 1/60;
                 this.camera.position.z += moveDir.x * this.currentSpeed * 1/60;
             }
