@@ -86,52 +86,52 @@ export function init(): void{
     const loader = new AudioLoader();
     loader.load("./Assets/Sounds/Do.mp3", function(buffer: AudioBuffer) {
         sonDo.setBuffer(buffer);
-        sonDo.setVolume(0.3);
+        sonDo.setVolume(0.6);
     });
     loader.load("./Assets/Sounds/Re.mp3", function(buffer: AudioBuffer){
         sonRe.setBuffer(buffer);
-        sonRe.setVolume(0.3);
+        sonRe.setVolume(0.6);
     });
     loader.load("./Assets/Sounds/Mi.mp3", function(buffer: AudioBuffer){
         sonMi.setBuffer(buffer);
-        sonMi.setVolume(0.3);
+        sonMi.setVolume(0.6);
     });
     loader.load("./Assets/Sounds/Sol.mp3", function(buffer: AudioBuffer){
         sonSol.setBuffer(buffer);
-        sonSol.setVolume(0.3);
+        sonSol.setVolume(0.6);
     });
     soundArray = [sonDo, sonRe, sonMi, sonSol];
     loader.load("./Assets/Sounds/Evangelion.mp3", function(buffer: AudioBuffer){
         musEvan.setBuffer(buffer);
-        musEvan.setVolume(0.3);
+        musEvan.setVolume(0.6);
     });
     loader.load("./Assets/Sounds/MarioTheme.mp3", function(buffer: AudioBuffer){
         musMario.setBuffer(buffer);
-        musMario.setVolume(0.3);
+        musMario.setVolume(0.6);
     });
     loader.load("./Assets/Sounds/Mus.mp3", function(buffer: AudioBuffer){
         musHein.setBuffer(buffer);
-        musHein.setVolume(0.3);
+        musHein.setVolume(0.6);
     });
     loader.load("./Assets/Sounds/ViveLeVent.mp3", function(buffer: AudioBuffer){
         musVive.setBuffer(buffer);
-        musVive.setVolume(0.3);
+        musVive.setVolume(0.6);
     });
     loader.load("./Assets/Sounds/win.mp3", function(buffer: AudioBuffer){
         sonWin.setBuffer(buffer);
-        sonWin.setVolume(0.3);
+        sonWin.setVolume(0.6);
     });
     loader.load("./Assets/Sounds/winwin.mp3", function(buffer: AudioBuffer){
         sonWinWin.setBuffer(buffer);
-        sonWinWin.setVolume(0.3);
+        sonWinWin.setVolume(0.2);
     });
     loader.load("./Assets/Sounds/ea1.mp3", function(buffer: AudioBuffer){
         soneaster1.setBuffer(buffer);
-        soneaster1.setVolume(0.3);
+        soneaster1.setVolume(0.6);
     });
     loader.load("./Assets/Sounds/ea2.mp3", function(buffer: AudioBuffer){
         soneaster2.setBuffer(buffer);
-        soneaster2.setVolume(0.3);
+        soneaster2.setVolume(0.6);
     });
     musArray = [musVive, musMario, musEvan, musHein, soneaster1, soneaster2];
     const loaderGeo = new BufferGeometryLoader();
