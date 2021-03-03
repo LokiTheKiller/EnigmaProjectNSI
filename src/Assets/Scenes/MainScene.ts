@@ -2,18 +2,19 @@ import { Player } from "../Objects/Player.js";
 import * as Game from "../../Game.js";
 import * as UI from "../Objects/UI.js";
 import { GameObject, Interactable } from "../../System/Core/GameObject.js";
-import { BoxGeometry, Texture, Mesh, MeshBasicMaterial, Object3D, ObjectLoader, Scene, PlaneGeometry, TextureLoader, MeshPhongMaterial } from '../../../libs/three/src/Three.js';
+import { BoxGeometry, Texture, Mesh, MeshBasicMaterial, Object3D, ObjectLoader, Scene, PlaneGeometry, TextureLoader, MeshPhongMaterial, BufferGeometryLoader, BufferGeometry, Vector3, Material } from '../../../libs/three/src/Three.js';
 import { Lever } from "../Objects/Lever.js";
 import { degToRad } from "../../System/Maths.js"
 
 import * as ColoredCandles from "../Objects/Enigmas/ColoredCandlesEnigma.js"
+import * as MusicEnigme from "../Objects/Enigmas/MusicEnigma.js"
 
 export var scene: Scene = new Scene();
-
+export var objDoor5: GameObject = new GameObject("");
 let collisionArray: Array<GameObject> = [];
 let interactionArray: Array<GameObject> = [];
 
-function addObject(mesh: Mesh|Object3D, name: string, collideable: Boolean, scene: Scene): GameObject
+export function addObject(mesh: Mesh|Object3D, name: string, collideable: Boolean, scene: Scene): GameObject
 {
     var obj: GameObject = new GameObject(name);
     if (collideable)
@@ -150,11 +151,19 @@ export function load(): Scene{
         piece4 = addObject(carte, "carte4", true, scene);
         piece4.position.z = 40;
      })
+    var door5:Mesh = new Mesh(doorGeo, doorMaterial);
+    objDoor5 = addObject(door5, "door5", true, scene);
+    objDoor5.position.set(0, 2.5, 50);
+    objDoor5.rotateY(degToRad(180));
+    MusicEnigme.init();
+    MusicEnigme.createEnigma();
 
 
     var player: Player = new Player("Player Test");
     player.camera = Game.getHandler().camera;
     player.camera.position.y = 1.8; //mise de la caméra à hauteur "humaine".
+    player.camera.position.x = -2;
+    player.camera.lookAt(0, 1.8, 1);
     // player.camera.lookAt(cube.position);
     scene.add(player);
     return scene;

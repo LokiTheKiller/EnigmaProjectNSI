@@ -4,10 +4,12 @@ import { GameObject, Interactable } from "../../System/Core/GameObject.js";
 import { BoxGeometry, Mesh, MeshBasicMaterial, ObjectLoader, Scene, PlaneGeometry, TextureLoader, MeshPhongMaterial } from '../../../libs/three/src/Three.js';
 import { degToRad } from "../../System/Maths.js";
 import * as ColoredCandles from "../Objects/Enigmas/ColoredCandlesEnigma.js";
+import * as MusicEnigme from "../Objects/Enigmas/MusicEnigma.js";
 export var scene = new Scene();
+export var objDoor5 = new GameObject("");
 let collisionArray = [];
 let interactionArray = [];
-function addObject(mesh, name, collideable, scene) {
+export function addObject(mesh, name, collideable, scene) {
     var obj = new GameObject(name);
     if (collideable) {
         collisionArray.push(obj);
@@ -128,9 +130,17 @@ export function load() {
         piece4 = addObject(carte, "carte4", true, scene);
         piece4.position.z = 40;
     });
+    var door5 = new Mesh(doorGeo, doorMaterial);
+    objDoor5 = addObject(door5, "door5", true, scene);
+    objDoor5.position.set(0, 2.5, 50);
+    objDoor5.rotateY(degToRad(180));
+    MusicEnigme.init();
+    MusicEnigme.createEnigma();
     var player = new Player("Player Test");
     player.camera = Game.getHandler().camera;
     player.camera.position.y = 1.8; //mise de la caméra à hauteur "humaine".
+    player.camera.position.x = -2;
+    player.camera.lookAt(0, 1.8, 1);
     // player.camera.lookAt(cube.position);
     scene.add(player);
     return scene;
