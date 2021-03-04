@@ -2,17 +2,19 @@ import { Player } from "../Objects/Player.js";
 import * as Game from "../../Game.js";
 import * as UI from "../Objects/UI.js";
 import { GameObject, Interactable } from "../../System/Core/GameObject.js";
-import { BoxGeometry, Texture, Mesh, MeshBasicMaterial, Object3D, ObjectLoader, Scene, PlaneGeometry, TextureLoader, MeshPhongMaterial, BufferGeometryLoader, BufferGeometry, Vector3, Material } from '../../../libs/three/src/Three.js';
+import { BoxGeometry, Texture, Mesh, MeshBasicMaterial, Object3D, ObjectLoader, Scene, PlaneGeometry, TextureLoader, MeshPhongMaterial, LoadingManager, BufferGeometry, Vector3, Material, Camera } from '../../../libs/three/src/Three.js';
 import { Lever } from "../Objects/Lever.js";
 import { degToRad } from "../../System/Maths.js"
 
 import * as ColoredCandles from "../Objects/Enigmas/ColoredCandlesEnigma.js"
 import * as MusicEnigme from "../Objects/Enigmas/MusicEnigma.js"
 
+export var manager: LoadingManager = new LoadingManager();
 export var scene: Scene = new Scene();
 export var objDoor5: GameObject = new GameObject("");
 let collisionArray: Array<GameObject> = [];
 let interactionArray: Array<GameObject> = [];
+const loadingScreen: HTMLDivElement | null = document.querySelector("#loadingContainer");
 
 export function addObject(mesh: Mesh|Object3D, name: string, collideable: Boolean, scene: Scene): GameObject
 {
@@ -39,7 +41,16 @@ function addInteractable(mesh: Mesh, name: string, collideable: boolean, scene: 
 }
 
 export function load(): Scene{
-    const loader: ObjectLoader = new ObjectLoader();
+    var player: Player = new Player("Player Test");
+    player.camera = Game.getHandler().camera;
+    player.camera.position.y = 1.8; //mise de la caméra à hauteur "humaine".
+    player.camera.position.x = -2;
+    // player.camera.lookAt(cube.position);
+    scene.add(player);
+    manager.onLoad = function () {
+        loadingScreen?.remove();
+        }
+    const loader: ObjectLoader = new ObjectLoader(manager);
     var map: GameObject = new GameObject("");
     loader.load("./Assets/Textures/scene.json", function(carte: Object3D) {
         map = addObject(carte, "carte", true, scene);
@@ -138,7 +149,7 @@ export function load(): Scene{
     objDoor4.rotateY(degToRad(180));
 
     var trapdoorGeo: PlaneGeometry = new PlaneGeometry(2, 2.3);
-    const trapdoorTexture: Texture = new TextureLoader().load('./Assets/Textures/trapdoor.jpg');
+    const trapdoorTexture: Texture = new TextureLoader(manager).load('./Assets/Textures/trapdoor.jpg');
     var trapdoorMaterial: MeshPhongMaterial = new MeshPhongMaterial( { emissiveMap: trapdoorTexture, emissive: 0x2a2a2a} );
     var trapdoorMesh: Mesh = new Mesh(trapdoorGeo, trapdoorMaterial);
     var objTrapdoor:GameObject = addObject(trapdoorMesh, "trapdoor", true, scene);
@@ -157,15 +168,6 @@ export function load(): Scene{
     objDoor5.rotateY(degToRad(180));
     MusicEnigme.init();
     MusicEnigme.createEnigma();
-
-
-    var player: Player = new Player("Player Test");
-    player.camera = Game.getHandler().camera;
-    player.camera.position.y = 1.8; //mise de la caméra à hauteur "humaine".
-    player.camera.position.x = -2;
-    player.camera.lookAt(0, 1.8, 1);
-    // player.camera.lookAt(cube.position);
-    scene.add(player);
     return scene;
 }
 
