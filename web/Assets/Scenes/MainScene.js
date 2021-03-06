@@ -7,6 +7,7 @@ import * as ColoredCandles from "../Objects/Enigmas/ColoredCandlesEnigma.js";
 import * as MusicEnigme from "../Objects/Enigmas/MusicEnigma.js";
 export var manager = new LoadingManager();
 export var scene = new Scene();
+export var objTrapdoor = new GameObject("");
 export var objDoor5 = new GameObject("");
 let collisionArray = [];
 let interactionArray = [];
@@ -35,6 +36,7 @@ export function load() {
     player.camera = Game.getHandler().camera;
     player.camera.position.y = 1.8; //mise de la caméra à hauteur "humaine".
     player.camera.position.x = -2;
+    player.camera.position.z = 38;
     // player.camera.lookAt(cube.position);
     scene.add(player);
     manager.onLoad = function () {
@@ -129,12 +131,12 @@ export function load() {
     var objDoor4 = addObject(door4, "Door4", false, scene);
     objDoor4.position.set(0, 2.5, 30);
     objDoor4.rotateY(degToRad(180));
-    var trapdoorGeo = new PlaneGeometry(2, 2.3);
+    var trapdoorGeo = new PlaneGeometry(3.4, 3.1);
     const trapdoorTexture = new TextureLoader(manager).load('./Assets/Textures/trapdoor.jpg');
     var trapdoorMaterial = new MeshPhongMaterial({ emissiveMap: trapdoorTexture, emissive: 0x2a2a2a });
     var trapdoorMesh = new Mesh(trapdoorGeo, trapdoorMaterial);
-    var objTrapdoor = addObject(trapdoorMesh, "trapdoor", true, scene);
-    objTrapdoor.position.z = 22.85;
+    objTrapdoor = addObject(trapdoorMesh, "trapdoor", true, scene);
+    objTrapdoor.position.z = 23.525;
     objTrapdoor.rotateX(degToRad(-90));
     var piece4 = new GameObject("");
     loader.load("./Assets/Textures/scene4.json", function (carte) {
@@ -142,11 +144,23 @@ export function load() {
         piece4.position.z = 40;
     });
     var door5 = new Mesh(doorGeo, doorMaterial);
-    objDoor5 = addObject(door5, "door5", true, scene);
+    objDoor5 = addObject(door5, "door5", false, scene);
     objDoor5.position.set(0, 2.5, 50);
     objDoor5.rotateY(degToRad(180));
     MusicEnigme.init();
     MusicEnigme.createEnigma();
+    var piece5 = new GameObject("");
+    loader.load("./Assets/Textures/scene5.json", function (carte) {
+        piece5 = addObject(carte, "carte5", true, scene);
+        piece5.position.z = 60;
+    });
+    var fakeWallGeo = new PlaneGeometry(4, 5);
+    var fakeWallTexture = new TextureLoader(manager).load("./Assets/Textures/wall.jpg");
+    var fakeWallMaterial = new MeshPhongMaterial({ emissiveMap: fakeWallTexture, emissive: 0x2a2a2a, specular: 0xffffff, shininess: 30, color: 0x000000 });
+    var fakeWall = new Mesh(fakeWallGeo, fakeWallMaterial);
+    var fakeWallObj = addObject(fakeWall, "fakeWall", false, scene);
+    fakeWallObj.position.set(7.5, 2.5, 67);
+    fakeWallObj.rotateY(degToRad(-90));
     return scene;
 }
 export function removeInteraction(obj) {

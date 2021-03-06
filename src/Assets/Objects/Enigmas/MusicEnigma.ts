@@ -1,6 +1,6 @@
-import { GameObject, Interactable } from "../../../System/Core/GameObject.js";
-import { Audio, BufferGeometry, AudioLoader, MeshBasicMaterial, BoxGeometry, Color, Mesh, MeshPhongMaterial, PointLight, Scene, BufferGeometryLoader, AudioListener} from "../../../../libs/three/src/Three.js";
-import { interactionArray, removeCollision, scene, addObject, objDoor5, collisionArray } from "../../Scenes/MainScene.js";
+import { Interactable } from "../../../System/Core/GameObject.js";
+import { Audio, BufferGeometry, AudioLoader, MeshBasicMaterial, BoxGeometry, Mesh, BufferGeometryLoader, AudioListener} from "../../../../libs/three/src/Three.js";
+import { interactionArray, removeCollision, scene, objDoor5 } from "../../Scenes/MainScene.js";
 import { degToRad } from "../../../System/Maths.js"
 import * as Game from "../../../Game.js";
 import * as UI from "../../Objects/UI.js";
@@ -9,11 +9,11 @@ var solved:boolean = false;
 var stage:number = 0;
 var soundArray:Array<Audio> = [];
 var musArray:Array<Audio> = [];
-const clocheMaterial: MeshPhongMaterial = new MeshPhongMaterial( {emissive: 0x2e3440} );  
+const clocheMaterial: MeshBasicMaterial = new MeshBasicMaterial( {color: 0x2e3440} );  
 var playedNotes:Array<String> = [];
 var Musics:Array<Array<String>> = [
 ["Mi", "Mi", "Mi", "Mi","Mi", "Mi", "Mi", "Sol", "Do", "Ré", "Mi" ],
-[ "Ré", "Ré", "Ré", "Do", "Ré", "Mi", "Do"],
+[ "Mi", "Mi", "Mi", "Do", "Mi", "Sol", "Do"],
 [ "Do", "Ré", "Mi", "Ré", "Mi", "Mi", "Mi" ,"Sol", "Mi", "Ré", "Do", "Mi"],
 ["Do", "Do", "Ré", "Mi", "Sol", "Sol", "Do", "Do", "Ré", "Mi"]
 ];
@@ -141,8 +141,8 @@ export function init(): void{
         const clocheMesh3: Mesh = new Mesh(bell, clocheMaterial);
         const clocheMesh4: Mesh = new Mesh(bell, clocheMaterial);
         clocheMesh.position.y = 1.3; 
-        clocheMesh.position.z = 42.45;
-        clocheMesh.position.x = -0.3;
+        clocheMesh.position.z = 40;
+        clocheMesh.position.x = -1.5;
         clocheMesh.scale.set(5,5,5);
         clocheMesh.rotation.x = degToRad(-90);
         const clocheIntSol:Interactable = new Interactable("clocheSol", function()
@@ -159,8 +159,8 @@ export function init(): void{
         clocheIntSol.add(clocheMesh);
         scene.add(clocheIntSol);
         clocheMesh2.position.y = 1.3; 
-        clocheMesh2.position.z = 41.45;
-        clocheMesh2.position.x = -0.3;
+        clocheMesh2.position.z = 40;
+        clocheMesh2.position.x = -0.5;
         clocheMesh2.scale.set(5,5,5);
         clocheMesh2.rotation.x = degToRad(-90);
         const clocheIntMi:Interactable = new Interactable("clocheMi", function()
@@ -177,8 +177,8 @@ export function init(): void{
         clocheIntMi.add(clocheMesh2);
         scene.add(clocheIntMi);
         clocheMesh3.position.y = 1.3; 
-        clocheMesh3.position.z = 40.45;
-        clocheMesh3.position.x = -0.3;
+        clocheMesh3.position.z = 40;
+        clocheMesh3.position.x = 0.5;
         clocheMesh3.scale.set(5,5,5);
         clocheMesh3.rotation.x = degToRad(-90); 
         const clocheIntRe:Interactable = new Interactable("clocheRe", function()
@@ -195,8 +195,8 @@ export function init(): void{
         clocheIntRe.add(clocheMesh3);
         scene.add(clocheIntRe);
         clocheMesh4.position.y = 1.3; 
-        clocheMesh4.position.z = 39.45;
-        clocheMesh4.position.x = -0.3;
+        clocheMesh4.position.z = 40;
+        clocheMesh4.position.x = 1.5;
         clocheMesh4.scale.set(5,5,5);
         clocheMesh4.rotation.x = degToRad(-90);
         const clocheIntDo:Interactable = new Interactable("clocheDo", function()
@@ -216,14 +216,14 @@ export function init(): void{
 }
 
 export function createEnigma():void {
-    var hitboxBoiteGeo:BoxGeometry = new BoxGeometry(0.4, 0.4, 0.7);
+    var hitboxBoiteGeo:BoxGeometry = new BoxGeometry(0.7, 0.4, 0.4);
     var hitboxBoiteMat:MeshBasicMaterial = new MeshBasicMaterial();
     var hitboxBoiteMesh = new Mesh(hitboxBoiteGeo, hitboxBoiteMat);
     const BoiteMusique:Interactable = new Interactable("BoiteMusique", playMusic);
     BoiteMusique.add(hitboxBoiteMesh);
     interactionArray.push(BoiteMusique);
     hitboxBoiteMesh.visible = false;
-    BoiteMusique.position.set(0, 1.55, 38)
+    BoiteMusique.position.set(-2, 1.55, 40);
     scene.add(BoiteMusique);
 
 }
