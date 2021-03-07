@@ -55,7 +55,7 @@ export class Player extends GameObject{
             return;
         }
         const iter: Array<GameObject> = interactionArray;
-        const distance: number = 2.5;
+        const distance: number = 3;
         let interactions:Array<Intersection>;
         let cameraDir:Vector3 = new Vector3();
         this.camera.getWorldDirection(cameraDir);

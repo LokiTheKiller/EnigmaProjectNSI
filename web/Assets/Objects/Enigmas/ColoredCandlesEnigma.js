@@ -1,9 +1,11 @@
-import { GameObject, Interactable } from "../../../System/Core/GameObject.js";
+import { Interactable } from "../../../System/Core/GameObject.js";
+import { Door } from "../../Objects/Door.js";
 import { Audio, AudioListener, AudioLoader, BoxGeometry, Color, Mesh, MeshPhongMaterial, PointLight } from "../../../../libs/three/src/Three.js";
-import { interactionArray, removeCollision, scene } from "../../Scenes/MainScene.js";
+import { interactionArray } from "../../Scenes/MainScene.js";
 import * as Game from "../../../Game.js";
 import * as UI from "../../Objects/UI.js";
-export var door = new GameObject("Null");
+import * as Music from "../Enigmas/MusicEnigma.js";
+export var door = new Door("Null");
 var colors = [0, 1, 2, 3, 4, 5, 6, 7];
 var fireBurstSound = new Audio(new AudioListener());
 var fireSound = new Audio(new AudioListener());
@@ -45,8 +47,8 @@ function checkStage() {
         if (currentStage == 2) {
             solved = true;
             UI.increment();
-            scene.remove(door);
-            removeCollision(door);
+            door.animate();
+            Music.sonWinWin.play();
         }
         else {
             ansLight.color = changeColor(ansLight.color);

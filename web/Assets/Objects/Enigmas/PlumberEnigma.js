@@ -1,10 +1,12 @@
-import { BoxGeometry, BufferGeometry, BufferGeometryLoader, Mesh, MeshBasicMaterial, MeshPhongMaterial, TextureLoader } from "../../../../libs/three/src/Three.js";
-import { GameObject, Interactable } from "../../../System/Core/GameObject.js";
+import { Door } from "../../Objects/Door.js";
+import { BufferGeometryLoader, CylinderGeometry, DoubleSide, Mesh, MeshPhongMaterial, TextureLoader } from "../../../../libs/three/src/Three.js";
+import { Interactable } from "../../../System/Core/GameObject.js";
 import * as Maths from "../../../System/Maths.js";
-import { interactionArray, scene, removeCollision } from "../../Scenes/MainScene.js";
+import { interactionArray } from "../../Scenes/MainScene.js";
+import * as Music from "../Enigmas/MusicEnigma.js";
 import * as UI from "../UI.js";
 var plumber = [[], [], [], [], [], []];
-var door = new GameObject("Null");
+var door = new Door("Null");
 const types = [
     [0, 1, 1, 0, 1, 0],
     [0, 0, 0, 1, 0, 0],
@@ -22,8 +24,8 @@ export function getPipe(x, y) {
 function checkWin() {
     if (solution()) {
         UI.increment();
-        scene.remove(door);
-        removeCollision(door);
+        door.animate();
+        Music.sonWinWin.play();
         for (let x = 0; x < 6; x++) {
             for (let y = 0; y < 6; y++) {
                 plumber[x][y].interactable = false;
@@ -32,11 +34,12 @@ function checkWin() {
     }
 }
 function solution() {
-    return check(5, 0, false, 0) && check(4, 0, false, 0) && check(3, 0, true, 0) && check(3, 1, false, 1) && check(3, 2, true, 0) && check(4, 2, true, 0) &&
-        check(4, 3, false, 1) && check(4, 4, true, 0) && check(3, 4, false, 0) && check(2, 4, false, 0) && check(1, 4, false, 0) && check(0, 4, true, 0) && check(0, 5, false, 1);
+    return check(5, 0, false, 0) && check(4, 0, false, 0) && check(3, 0, true, 1) && check(3, 1, false, 1) && check(3, 2, true, 2) && check(4, 2, true, 0) &&
+        check(4, 3, false, 1) && check(4, 4, true, 3) && check(3, 4, false, 0) && check(2, 4, false, 0) && check(1, 4, false, 0) && check(0, 4, true, 1) && check(0, 5, false, 1);
 }
 function check(x, y, turn, answer) {
     let test = (turn ? getPipe(x, y).getState() : getPipe(x, y).getState() % 2) === answer;
+    console.log("Pipe (" + x + ";" + y + ") is " + test + " (" + getPipe(x, y).getState() + " === " + answer + ")");
     return test;
 }
 export class Pipe extends Interactable {
@@ -76,7 +79,6 @@ export class Pipe extends Interactable {
             return;
         }
         this.state = (this.state + 1) % 4;
-        console.log(this.state);
         if (this.state === 0) {
             this.objective = Math.PI * 2;
         }
@@ -98,43 +100,58 @@ export class Pipe extends Interactable {
 }
 export function init(scene) {
     const texture = new TextureLoader().load('./Assets/Textures/metal.jpg');
-    var coudeMaterial = new MeshPhongMaterial({ emissiveMap: texture, emissive: 0x2a2a2a });
+    var coudeMaterial = new MeshPhongMaterial({ emissiveMap: texture, emissive: 0x2a2a2a, side: DoubleSide });
     const loaderGeo = new BufferGeometryLoader();
-    let coudeGeo = new BufferGeometry();
+    const normalGeo = new CylinderGeometry();
     loaderGeo.load("./Assets/Textures/coude.json", function (coude) {
-        coudeGeo = coude;
-    });
-    for (let x = 0; x < 6; x++) {
-        for (let y = 0; y < 6; y++) {
-            let pipe = new Pipe("Pipe (" + x + ";" + y + ")", () => { }, (obj) => {
-                console.log(obj.getState());
-                checkWin();
-            });
-            interactionArray.push(pipe);
-            const geometry = new BoxGeometry();
-            const material = new MeshBasicMaterial({ color: 0xFF7F00 });
-            let mesh = new Mesh(geometry, material);
-            if (types[x][y] === 1) {
-                material.color.setHex(0x00FF00);
-                mesh = new Mesh(coudeGeo, material);
+        for (let x = 0; x < 6; x++) {
+            for (let y = 0; y < 6; y++) {
+                if (types[x][y] === 1) {
+                    let pipe = new Pipe("Pipe (" + x + ";" + y + ")", () => { }, (obj) => {
+                        console.log(obj.getState());
+                        checkWin();
+                    });
+                    interactionArray.push(pipe);
+                    let mesh = new Mesh(coude, coudeMaterial);
+                    mesh.rotation.y = Math.PI / 2;
+                    pipe.add(mesh);
+                    pipe.position.z = 14.25 + 0.75 * y;
+                    pipe.position.y = 4.375 - 0.75 * x;
+                    pipe.position.x = 4.8;
+                    if (pipe.state === 0) {
+                        pipe.rotation.x = 2 * Math.PI;
+                    }
+                    else {
+                        pipe.rotation.x = Maths.loopInRange(pipe.state * Math.PI / 2, 0, 2 * Math.PI);
+                    }
+                    scene.add(pipe);
+                    plumber[x].push(pipe);
+                }
+                else {
+                    let pipe = new Pipe("Pipe (" + x + ";" + y + ")", () => { }, (obj) => {
+                        checkWin();
+                    });
+                    interactionArray.push(pipe);
+                    let mesh = new Mesh(normalGeo, coudeMaterial);
+                    mesh.scale.x = 0.2;
+                    mesh.scale.y = 0.75;
+                    mesh.scale.z = 0.2;
+                    pipe.add(mesh);
+                    pipe.position.z = 14.25 + 0.75 * y;
+                    pipe.position.y = 4.375 - 0.75 * x;
+                    pipe.position.x = 4.8;
+                    if (pipe.state === 0) {
+                        pipe.rotation.x = 2 * Math.PI;
+                    }
+                    else {
+                        pipe.rotation.x = Maths.loopInRange(pipe.state * Math.PI / 2, 0, 2 * Math.PI);
+                    }
+                    scene.add(pipe);
+                    plumber[x].push(pipe);
+                }
             }
-            mesh.scale.x = 0.5;
-            mesh.scale.y = 0.75;
-            mesh.scale.z = 0.5;
-            pipe.add(mesh);
-            pipe.position.z = 14.25 + 0.75 * y;
-            pipe.position.y = 4.375 - 0.75 * x;
-            pipe.position.x = 4.8;
-            if (pipe.state === 0) {
-                pipe.rotation.x = 2 * Math.PI;
-            }
-            else {
-                pipe.rotation.x = Maths.loopInRange(pipe.state * Math.PI / 2, 0, 2 * Math.PI);
-            }
-            scene.add(pipe);
-            plumber[x].push(pipe);
         }
-    }
+    });
 }
 export function setDoor(doorObj) {
     door = doorObj;

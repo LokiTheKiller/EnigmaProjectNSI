@@ -1,6 +1,6 @@
 import { Interactable } from "../../../System/Core/GameObject.js";
 import { Audio, AudioLoader, MeshBasicMaterial, BoxGeometry, Mesh, BufferGeometryLoader, AudioListener } from "../../../../libs/three/src/Three.js";
-import { interactionArray, removeCollision, scene, objDoor5 } from "../../Scenes/MainScene.js";
+import { interactionArray, scene, objDoor5 } from "../../Scenes/MainScene.js";
 import { degToRad } from "../../../System/Maths.js";
 import * as Game from "../../../Game.js";
 import * as UI from "../../Objects/UI.js";
@@ -14,10 +14,10 @@ var Musics = [
     ["Mi", "Mi", "Mi", "Mi", "Mi", "Mi", "Mi", "Sol", "Do", "Ré", "Mi"],
     ["Mi", "Mi", "Mi", "Do", "Mi", "Sol", "Do"],
     ["Do", "Ré", "Mi", "Ré", "Mi", "Mi", "Mi", "Sol", "Mi", "Ré", "Do", "Mi"],
-    ["Do", "Do", "Ré", "Mi", "Sol", "Sol", "Do", "Do", "Ré", "Mi"]
+    ["Do", "Do", "Ré", "Mi", "Sol", "Sol", "Do", "Do", "Mi", "Sol"]
 ];
 var sonWin = new Audio(new AudioListener());
-var sonWinWin = new Audio(new AudioListener());
+export var sonWinWin = new Audio(new AudioListener());
 var soneaster1 = new Audio(new AudioListener());
 var soneaster2 = new Audio(new AudioListener());
 function playMusic() {
@@ -43,8 +43,7 @@ function check(i) {
         if (i == Musics[stage].length - 1) {
             if (stage == 3) {
                 sonWinWin.play();
-                scene.remove(objDoor5);
-                removeCollision(objDoor5);
+                objDoor5.animate();
                 solved = true;
                 UI.increment();
                 return;
