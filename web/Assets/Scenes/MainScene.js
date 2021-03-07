@@ -1,5 +1,6 @@
 import { Player } from "../Objects/Player.js";
 import * as Game from "../../Game.js";
+import * as Plumber from "../Objects/Enigmas/PlumberEnigma.js";
 import { GameObject, Interactable } from "../../System/Core/GameObject.js";
 import { BoxGeometry, Mesh, MeshBasicMaterial, ObjectLoader, Scene, PlaneGeometry, TextureLoader, MeshPhongMaterial, LoadingManager } from '../../../libs/three/src/Three.js';
 import { degToRad } from "../../System/Maths.js";
@@ -112,6 +113,7 @@ export function load() {
     ColoredCandles.init();
     ColoredCandles.setDoor(objDoor);
     ColoredCandles.createEnigma(scene);
+    Plumber.init(scene);
     var piece2 = new GameObject("");
     loader.load("./Assets/Textures/scene2.json", function (carte) {
         piece2 = addObject(carte, "carte2", true, scene);
@@ -150,18 +152,18 @@ export function load() {
     objDoor5.rotateY(degToRad(180));
     MusicEnigme.init();
     MusicEnigme.createEnigma();
-    var piece5 = new GameObject("");
-    loader.load("./Assets/Textures/scene5.json", function (carte) {
+    /**var piece5: GameObject = new GameObject("");
+    loader.load("./Assets/Textures/scene5.json", function(carte: Object3D) {
         piece5 = addObject(carte, "carte5", true, scene);
         piece5.position.z = 60;
-    });
-    var fakeWallGeo = new PlaneGeometry(4, 5);
-    var fakeWallTexture = new TextureLoader(manager).load("./Assets/Textures/wall.jpg");
-    var fakeWallMaterial = new MeshPhongMaterial({ emissiveMap: fakeWallTexture, emissive: 0x2a2a2a, specular: 0xffffff, shininess: 30, color: 0x000000 });
-    var fakeWall = new Mesh(fakeWallGeo, fakeWallMaterial);
-    var fakeWallObj = addObject(fakeWall, "fakeWall", false, scene);
+     })
+    var fakeWallGeo: PlaneGeometry = new PlaneGeometry(4, 5);
+    var fakeWallTexture: Texture = new TextureLoader(manager).load("./Assets/Textures/wall.jpg");
+    var fakeWallMaterial: MeshPhongMaterial = new MeshPhongMaterial( { emissiveMap: fakeWallTexture, emissive: 0x2a2a2a, specular: 0xffffff, shininess: 30, color: 0x000000} );
+    var fakeWall: Mesh = new Mesh(fakeWallGeo, fakeWallMaterial);
+    var fakeWallObj: GameObject = addObject(fakeWall, "fakeWall", false, scene);
     fakeWallObj.position.set(7.5, 2.5, 67);
-    fakeWallObj.rotateY(degToRad(-90));
+    fakeWallObj.rotateY(degToRad(-90));**/
     return scene;
 }
 export function removeInteraction(obj) {

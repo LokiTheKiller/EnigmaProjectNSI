@@ -1,9 +1,8 @@
 import { Player } from "../Objects/Player.js";
 import * as Game from "../../Game.js";
-import * as UI from "../Objects/UI.js";
+import * as Plumber from "../Objects/Enigmas/PlumberEnigma.js"
 import { GameObject, Interactable } from "../../System/Core/GameObject.js";
 import { BoxGeometry, Texture, Mesh, MeshBasicMaterial, Object3D, ObjectLoader, Scene, PlaneGeometry, TextureLoader, MeshPhongMaterial, LoadingManager, BufferGeometry, Vector3, Material, Camera } from '../../../libs/three/src/Three.js';
-import { Lever } from "../Objects/Lever.js";
 import { degToRad } from "../../System/Maths.js"
 
 import * as ColoredCandles from "../Objects/Enigmas/ColoredCandlesEnigma.js"
@@ -127,6 +126,8 @@ export function load(): Scene{
     ColoredCandles.setDoor(objDoor);
     ColoredCandles.createEnigma(scene);
 
+    Plumber.init(scene);
+
     var piece2: GameObject = new GameObject("");
     loader.load("./Assets/Textures/scene2.json", function(carte: Object3D) {
         piece2 = addObject(carte, "carte2", true, scene);
@@ -173,7 +174,7 @@ export function load(): Scene{
     MusicEnigme.createEnigma();
 
     
-    var piece5: GameObject = new GameObject("");
+    /**var piece5: GameObject = new GameObject("");
     loader.load("./Assets/Textures/scene5.json", function(carte: Object3D) {
         piece5 = addObject(carte, "carte5", true, scene);
         piece5.position.z = 60;
@@ -184,7 +185,7 @@ export function load(): Scene{
     var fakeWall: Mesh = new Mesh(fakeWallGeo, fakeWallMaterial);
     var fakeWallObj: GameObject = addObject(fakeWall, "fakeWall", false, scene);
     fakeWallObj.position.set(7.5, 2.5, 67);
-    fakeWallObj.rotateY(degToRad(-90));
+    fakeWallObj.rotateY(degToRad(-90));**/
     return scene;
 }
 
