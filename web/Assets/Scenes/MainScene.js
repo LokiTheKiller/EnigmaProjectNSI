@@ -9,6 +9,7 @@ export var manager = new LoadingManager();
 export var scene = new Scene();
 export var objTrapdoor = new GameObject("");
 export var objDoor5 = new GameObject("");
+export var map = new GameObject("");
 let collisionArray = [];
 let interactionArray = [];
 const loadingScreen = document.querySelector("#loadingContainer");
@@ -43,7 +44,7 @@ export function load() {
         loadingScreen === null || loadingScreen === void 0 ? void 0 : loadingScreen.remove();
     };
     const loader = new ObjectLoader(manager);
-    var map = new GameObject("");
+    map = new GameObject("");
     loader.load("./Assets/Textures/scene.json", function (carte) {
         map = addObject(carte, "carte", true, scene);
     });

@@ -9,7 +9,7 @@ import { Handler } from './System/Core/Handler.js';
 window.addEventListener('resize', onWindowResize, false);
 
 const canvas: HTMLCanvasElement | null = document.querySelector('#canvas');
-var renderer: WebGLRenderer = new WebGLRenderer();
+export var renderer: WebGLRenderer = new WebGLRenderer();
 if(canvas !== null){
     renderer = new WebGLRenderer({canvas});
 }

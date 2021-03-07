@@ -7,7 +7,7 @@ import { GameObject } from "./System/Core/GameObject.js";
 import { Handler } from './System/Core/Handler.js';
 window.addEventListener('resize', onWindowResize, false);
 const canvas = document.querySelector('#canvas');
-var renderer = new WebGLRenderer();
+export var renderer = new WebGLRenderer();
 if (canvas !== null) {
     renderer = new WebGLRenderer({ canvas });
 }

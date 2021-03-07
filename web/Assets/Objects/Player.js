@@ -2,9 +2,10 @@ import { GameObject, Interactable } from "../../System/Core/GameObject.js";
 import * as Maths from "../../System/Maths.js";
 import * as Game from "../../Game.js";
 import * as Input from "../../System/Input/Input.js";
-import { Vector2, Vector3, Raycaster, Euler } from "../../../libs/three/src/Three.js";
+import { Vector2, Vector3, Raycaster, Euler, AudioLoader, Audio, AudioListener } from "../../../libs/three/src/Three.js";
 import * as UI from "../Objects/UI.js";
-import { collisionArray, interactionArray } from "../Scenes/MainScene.js";
+import { collisionArray, interactionArray, objTrapdoor, scene } from "../Scenes/MainScene.js";
+var breakSound = new Audio(new AudioListener());
 export class Player extends GameObject {
     constructor(name) {
         super(name);
@@ -16,6 +17,7 @@ export class Player extends GameObject {
         this.camera = undefined;
         this.raycaster = new Raycaster();
         this.rotate = new Euler(0, 0, 0);
+        this.trapBroke = false;
     }
     collision(x, z) {
         if (this.camera === undefined) {
@@ -39,6 +41,28 @@ export class Player extends GameObject {
             return true;
         }
         return false;
+    }
+    interactionTrappe() {
+        if (this.camera === undefined || this.trapBroke) {
+            return;
+        }
+        let vecteurDown = new Vector3(0, -1, 0);
+        this.raycaster.set(this.camera.position, vecteurDown);
+        let interaction = this.raycaster.intersectObject(objTrapdoor, true);
+        if (interaction.length > 0) {
+            const loader = new AudioLoader();
+            loader.load("./Assets/Sounds/TrapBreak.mp3", function (buffer) {
+                breakSound.setBuffer(buffer);
+                breakSound.setVolume(0.6);
+            });
+            while (this.camera.position.y > -8.2) {
+                this.camera.position.y -= 0.1;
+                Game.renderer.render(scene, this.camera);
+            }
+            scene.remove(objTrapdoor);
+            this.trapBroke = true;
+            breakSound.play();
+        }
     }
     interaction() {
         if (this.camera === undefined) {
@@ -97,6 +121,7 @@ export class Player extends GameObject {
                     this.currentSpeed -= this.speed * 1 / 30;
                 }
             }
+            this.interactionTrappe();
             if (!this.collision(moveDir.x, moveDir.y)) {
                 this.camera.position.x += moveDir.y * this.currentSpeed * 1 / 60;
                 this.camera.position.z += moveDir.x * this.currentSpeed * 1 / 60;

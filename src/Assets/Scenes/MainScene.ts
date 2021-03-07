@@ -13,6 +13,7 @@ export var manager: LoadingManager = new LoadingManager();
 export var scene: Scene = new Scene();
 export var objTrapdoor: GameObject = new GameObject("");
 export var objDoor5: GameObject = new GameObject("");
+export var map: GameObject = new GameObject("");
 let collisionArray: Array<GameObject> = [];
 let interactionArray: Array<GameObject> = [];
 const loadingScreen: HTMLDivElement | null = document.querySelector("#loadingContainer");
@@ -53,7 +54,7 @@ export function load(): Scene{
         loadingScreen?.remove();
         }
     const loader: ObjectLoader = new ObjectLoader(manager);
-    var map: GameObject = new GameObject("");
+    map = new GameObject("");
     loader.load("./Assets/Textures/scene.json", function(carte: Object3D) {
         map = addObject(carte, "carte", true, scene);
      })
