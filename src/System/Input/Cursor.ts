@@ -7,6 +7,7 @@ export function init(): void{
     canvas = Game.getCanvas();
     if(canvas !== null){
         canvas.onclick = function() { setCursorLockState(locked); };
+
     }
 
 }
@@ -18,4 +19,8 @@ export function setCursorLockState(state: boolean): void{
         document.exitPointerLock();
     }
     locked = state;
+}
+
+export function getLockState(): boolean{
+    return document.pointerLockElement != null;
 }

@@ -16,3 +16,6 @@ export function setCursorLockState(state) {
     }
     locked = state;
 }
+export function getLockState() {
+    return document.pointerLockElement != null;
+}
