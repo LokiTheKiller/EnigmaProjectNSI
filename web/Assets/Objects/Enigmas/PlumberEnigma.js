@@ -116,7 +116,7 @@ export function init(scene) {
                     mesh.rotation.y = Math.PI / 2;
                     pipe.add(mesh);
                     pipe.position.z = 14.25 + 0.75 * y;
-                    pipe.position.y = 4.375 - 0.75 * x;
+                    pipe.position.y = 4.5 - 0.75 * x;
                     pipe.position.x = 4.8;
                     if (pipe.state === 0) {
                         pipe.rotation.x = 2 * Math.PI;
@@ -138,7 +138,7 @@ export function init(scene) {
                     mesh.scale.z = 0.2;
                     pipe.add(mesh);
                     pipe.position.z = 14.25 + 0.75 * y;
-                    pipe.position.y = 4.375 - 0.75 * x;
+                    pipe.position.y = 4.5 - 0.75 * x;
                     pipe.position.x = 4.8;
                     if (pipe.state === 0) {
                         pipe.rotation.x = 2 * Math.PI;

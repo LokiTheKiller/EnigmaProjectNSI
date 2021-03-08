@@ -135,12 +135,12 @@ export function init(scene: Scene): void{
                         checkWin();
                     });
                     interactionArray.push(pipe);
-                    let mesh: Mesh = new Mesh(coude, coudeMaterial);
+                    let mesh: Mesh = new Mesh(coude, coudeMaterial); 
                     mesh.rotation.y = Math.PI/2;
                     pipe.add(mesh);
                     
                     pipe.position.z = 14.25 + 0.75 * y;
-                    pipe.position.y = 4.375 - 0.75 * x;
+                    pipe.position.y = 4.5 - 0.75 * x;
                     pipe.position.x = 4.8;
                     if(pipe.state === 0){
                         pipe.rotation.x = 2 * Math.PI;
@@ -162,7 +162,7 @@ export function init(scene: Scene): void{
                     pipe.add(mesh);
                     
                     pipe.position.z = 14.25 + 0.75 * y;
-                    pipe.position.y = 4.375 - 0.75 * x;
+                    pipe.position.y = 4.5 - 0.75 * x;
                     pipe.position.x = 4.8;
                     if(pipe.state === 0){
                         pipe.rotation.x = 2 * Math.PI;

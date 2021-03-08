@@ -6,6 +6,9 @@ import * as Game from "../../../Game.js";
 import * as UI from "../../Objects/UI.js";
 import * as Music from "../Enigmas/MusicEnigma.js";
 export var door = new Door("Null");
+var rLight = new PointLight();
+var gLight = new PointLight();
+var bLight = new PointLight();
 var colors = [0, 1, 2, 3, 4, 5, 6, 7];
 var fireBurstSound = new Audio(new AudioListener());
 var fireSound = new Audio(new AudioListener());
@@ -44,6 +47,12 @@ function checkStage() {
             fireBurstSound.stop();
         }
         fireBurstSound.play();
+        rLight.intensity = 0;
+        candles[0] = false;
+        gLight.intensity = 0;
+        candles[1] = false;
+        bLight.intensity = 0;
+        candles[2] = false;
         if (currentStage == 2) {
             solved = true;
             UI.increment();
@@ -74,9 +83,9 @@ export function createEnigma(scene) {
     const rMaterial = new MeshPhongMaterial({ color: 0xBF0000, opacity: 0, transparent: true });
     const gMaterial = new MeshPhongMaterial({ color: 0x00BF00, opacity: 0, transparent: true });
     const bMaterial = new MeshPhongMaterial({ color: 0x0000BF, opacity: 0, transparent: true });
-    const rLight = new PointLight(0xFF0000, 0, 0.5);
-    const gLight = new PointLight(0x00FF00, 0, 0.5);
-    const bLight = new PointLight(0x0000FF, 0, 0.5);
+    rLight = new PointLight(0xFF0000, 0, 0.5);
+    gLight = new PointLight(0x00FF00, 0, 0.5);
+    bLight = new PointLight(0x0000FF, 0, 0.5);
     ansLight = new PointLight(changeColor(undefined), 1, 0.5);
     ansLight.position.x = 6.975;
     ansLight.position.y = 2.6;
